@@ -1,6 +1,6 @@
 # Poison Dice Skeleton Setup
 
-This is a minimal gameplay skeleton for the [Title] dice game:
+This is a minimal gameplay skeleton for the [Title] dice game.
 
 1. Open `Assets/Scenes/SampleScene.unity` in the Unity Editor.
 2. Create a Canvas and three panels:
@@ -12,11 +12,10 @@ This is a minimal gameplay skeleton for the [Title] dice game:
    - Panels: `titlePanel`, `gameplayPanel`, `resultsPanel`
    - Texts: `poisonDiceText`, `scoreText`, `lastRollText`, `resultsHeaderText`, `finalScoreText`, `statusText`
    - Buttons: `startButton`, `rollButton`, `giveUpButton`, `restartButton`
-5. Enable compilation by adding `POISON_DICE_GAME_ENABLED` to Project Settings > Player > Scripting Define Symbols.
-6. Start play:
+5. Play:
    - Start button sets the poison number.
    - Roll accumulates points while avoiding the poison value.
    - Give Up stores the current score and moves to Results.
    - Rolling poison immediately ends with final score = 0.
 
-The script is intentionally lightweight and includes no extra game mode, audio, or art systems so it is easy to expand next.
+`GoodGuyNameView.cs` is kept for testing and should not be removed.
