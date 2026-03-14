@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if POISON_DICE_GAME_ENABLED
 namespace Game.Runtime
 {
     public class PoisonDiceGameController : MonoBehaviour
@@ -85,11 +84,11 @@ namespace Game.Runtime
             var roll = RollDie();
             if (roll == _poisonDice)
             {
-            SetText(lastRollText, $"Rolled {roll} — poisoned!");
-            SetTextColor(lastRollText, poisonRollColor);
-            ShowGameOver(0, $"You hit the poison number ({_poisonDice}).");
-            return;
-        }
+                SetText(lastRollText, $"Rolled {roll} — poisoned!");
+                SetTextColor(lastRollText, poisonRollColor);
+                ShowGameOver(0, $"You hit the poison number ({_poisonDice}).");
+                return;
+            }
 
             _score += roll;
             SetText(lastRollText, $"Rolled {roll}");
@@ -172,4 +171,3 @@ namespace Game.Runtime
         }
     }
 }
-#endif
