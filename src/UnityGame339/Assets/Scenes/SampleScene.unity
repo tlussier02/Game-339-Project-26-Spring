@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 69834979}
   - component: {fileID: 69834981}
   - component: {fileID: 69834980}
-  - component: {fileID: 69834982}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -258,19 +257,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 69834978}
   m_CullTransparentMesh: 1
---- !u!114 &69834982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69834978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 278f5a3467fe4202addee8a0f4270ace, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Runtime.GoodGuyNameView
-  thisIsMyLabel: {fileID: 69834980}
 --- !u!1 &244078269
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +373,6 @@ GameObject:
   - component: {fileID: 249460598}
   - component: {fileID: 249460597}
   - component: {fileID: 249460596}
-  - component: {fileID: 249460595}
   m_Layer: 5
   m_Name: Reverse It
   m_TagString: Untagged
@@ -415,19 +400,6 @@ RectTransform:
   m_AnchoredPosition: {x: 58, y: -106}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &249460595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 249460593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5116588dcd45cbbb0c2da2f1cf4387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Runtime.BadGuyReverseItView
-  button: {fileID: 249460596}
 --- !u!114 &249460596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,7 +1000,6 @@ GameObject:
   - component: {fileID: 1053984659}
   - component: {fileID: 1053984661}
   - component: {fileID: 1053984660}
-  - component: {fileID: 1053984662}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
@@ -1155,20 +1126,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053984658}
   m_CullTransparentMesh: 1
---- !u!114 &1053984662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053984658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1895c45d3cfc52787e1d0efa976cae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  thisIsMyLabel: {fileID: 1053984660}
-  useAlternativeMessage: 0
 --- !u!1 &1282377320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,7 +1138,6 @@ GameObject:
   - component: {fileID: 1282377324}
   - component: {fileID: 1282377323}
   - component: {fileID: 1282377322}
-  - component: {fileID: 1282377325}
   m_Layer: 5
   m_Name: Hit It
   m_TagString: Untagged
@@ -1303,19 +1259,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1282377320}
   m_CullTransparentMesh: 1
---- !u!114 &1282377325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282377320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6503ef99c3d23888aadfdef235cc59cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  button: {fileID: 1282377322}
 --- !u!1 &1551455934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,7 +1269,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1551455937}
   - component: {fileID: 1551455936}
-  - component: {fileID: 1551455935}
   m_Layer: 0
   m_Name: Squarer
   m_TagString: Untagged
@@ -1334,18 +1276,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1551455935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1551455934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bc23b920d88a2105b446ebd6785f355, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!212 &1551455936
 SpriteRenderer:
   serializedVersion: 2
