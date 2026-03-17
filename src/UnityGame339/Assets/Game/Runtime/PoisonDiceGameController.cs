@@ -38,9 +38,24 @@ namespace Game.Runtime
         [SerializeField] private Color resultsWinColor = new Color(0.98f, 0.84f, 0.26f);
         [SerializeField] private Color resultsLoseColor = new Color(0.9f, 0.15f, 0.2f);
 
+        [Header("Diagnostics")]
+        [SerializeField] private bool enableDebugLogs = true;
+
         private GameState _state = GameState.Title;
         private int _poisonDice;
         private int _score;
+        private IGameLogger _logger = NullGameLogger.Instance;
+        private bool _hasInjectedLogger;
+
+        private void Awake()
+        {
+            if (!_hasInjectedLogger)
+            {
+                _logger = enableDebugLogs
+                    ? new UnityDebugGameLogger("PoisonDice", this)
+                    : NullGameLogger.Instance;
+            }
+        }
 
         private void Start()
         {
@@ -49,6 +64,7 @@ namespace Game.Runtime
             giveUpButton?.onClick.AddListener(GiveUp);
             restartButton?.onClick.AddListener(StartNewRound);
 
+            _logger.Log("Controller started. Waiting on the title screen.");
             ShowState(GameState.Title);
         }
 
@@ -58,6 +74,12 @@ namespace Game.Runtime
             rollButton?.onClick.RemoveListener(RollDice);
             giveUpButton?.onClick.RemoveListener(GiveUp);
             restartButton?.onClick.RemoveListener(StartNewRound);
+        }
+
+        public void SetLogger(IGameLogger logger)
+        {
+            _logger = logger ?? NullGameLogger.Instance;
+            _hasInjectedLogger = logger != null;
         }
 
         private void StartNewRound()
@@ -71,6 +93,7 @@ namespace Game.Runtime
 
             UpdateScoreDisplay();
             UpdatePoisonDisplay();
+            _logger.Log("Started a new round. Poison number is " + _poisonDice + ". Score reset to 0.");
             ShowState(GameState.Playing);
         }
 
@@ -78,6 +101,7 @@ namespace Game.Runtime
         {
             if (_state != GameState.Playing)
             {
+                _logger.LogWarning("Ignored roll input because the game is in state " + _state + ".");
                 return;
             }
 
@@ -86,6 +110,7 @@ namespace Game.Runtime
             {
                 SetText(lastRollText, $"Rolled {roll} — poisoned!");
                 SetTextColor(lastRollText, poisonRollColor);
+                _logger.LogWarning("Player rolled " + roll + ", matched the poison number, and lost the round.");
                 ShowGameOver(0, $"You hit the poison number ({_poisonDice}).");
                 return;
             }
@@ -95,27 +120,30 @@ namespace Game.Runtime
             SetTextColor(lastRollText, safeRollColor);
             UpdateScoreDisplay();
             SetText(statusText, "Nice roll. Keep going or give up.");
+            _logger.Log("Player rolled " + roll + " safely. Score is now " + _score + ".");
         }
 
         private void GiveUp()
         {
             if (_state != GameState.Playing)
             {
+                _logger.LogWarning("Ignored give-up input because the game is in state " + _state + ".");
                 return;
             }
 
+            _logger.Log("Player cashed out with " + _score + " points.");
             ShowGameOver(_score, "You chose to cash out.");
         }
 
         private void ShowGameOver(int finalScore, string message)
         {
-            _state = GameState.Results;
             SetText(finalScoreText, $"Final Score: {finalScore}");
             SetText(resultsHeaderText, finalScore == 0
                 ? "Bust"
                 : "Round Over");
             SetText(statusText, message);
             SetTextColor(statusText, finalScore == 0 ? resultsLoseColor : resultsWinColor);
+            _logger.Log("Round finished with final score " + finalScore + ". " + message);
             ShowState(GameState.Results);
         }
 
@@ -126,6 +154,7 @@ namespace Game.Runtime
 
         private void ShowState(GameState nextState)
         {
+            var previousState = _state;
             _state = nextState;
 
             if (titlePanel != null) titlePanel.SetActive(_state == GameState.Title);
@@ -139,6 +168,11 @@ namespace Game.Runtime
 
             UpdatePoisonDisplay();
             UpdateScoreDisplay();
+
+            if (previousState != nextState)
+            {
+                _logger.Log("State changed from " + previousState + " to " + nextState + ".");
+            }
         }
 
         private void UpdatePoisonDisplay()

@@ -5,10 +5,11 @@ This is a minimal gameplay skeleton for the [Title] dice game.
 Tracked skeleton scripts:
 
 1. `PoisonDiceGameController.cs`
-2. `PoisonDiceGameStateData.cs`
-3. `PoisonDiceHudView.cs`
-4. `PoisonDiceResultsView.cs`
-5. `PoisonDiceSceneBootstrap.cs`
+2. `GameLogger.cs`
+3. `PoisonDiceGameStateData.cs`
+4. `PoisonDiceHudView.cs`
+5. `PoisonDiceResultsView.cs`
+6. `PoisonDiceSceneBootstrap.cs`
 
 The controller is the only script with active gameplay logic right now.
 The extra scripts are compile-safe scaffolding so the project opens cleanly and the
@@ -28,6 +29,8 @@ Scene wiring target:
    - Panels: `titlePanel`, `gameplayPanel`, `resultsPanel`
    - Texts: `poisonDiceText`, `scoreText`, `lastRollText`, `resultsHeaderText`, `finalScoreText`, `statusText`
    - Buttons: `startButton`, `rollButton`, `giveUpButton`, `restartButton`
+6. Leave `enableDebugLogs` turned on if you want Unity Console output showing state changes,
+   poison number selection, rolls, busts, and cash-outs during play.
 
 Gameplay loop:
 
