@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3740593285411036697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6454540714388936599}
+  - component: {fileID: -8835884215818419541}
+  - component: {fileID: 4381669862203905363}
+  - component: {fileID: 8540653985387730871}
+  - component: {fileID: 5720641338077613080}
+  m_Layer: 0
+  m_Name: PoisonDiceGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6454540714388936599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740593285411036697}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8835884215818419541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740593285411036697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05f2b93f135b4864a77cfe67f87abbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Runtime.PoisonDiceGameController
+  titlePanel: {fileID: 2257827938249745281, guid: 3a27d667e600c4d8aa78c96db422ee2b, type: 3}
+  gameplayPanel: {fileID: 552873065914663094, guid: eeb7291b4284049c994da6ecccbd5d87, type: 3}
+  resultsPanel: {fileID: 0}
+  poisonDiceText: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+  scoreText: {fileID: 7671417542386403844, guid: 9360f42668a484888833fbb96d586f65, type: 3}
+  lastRollText: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+  resultsHeaderText: {fileID: 0}
+  finalScoreText: {fileID: 0}
+  statusText: {fileID: 0}
+  startButton: {fileID: 8631075106636891475, guid: 2d76d6999dd3b47fa8bb4ebebfff09f5, type: 3}
+  rollButton: {fileID: 3131102731390812257, guid: 069fccb2e4fa14eb0b05a2d6cb052fd6, type: 3}
+  giveUpButton: {fileID: 88423685004572457, guid: b1b315d37763e48d79328387e72eba3f, type: 3}
+  restartButton: {fileID: 1866664939635508656, guid: a41d3d07dedab48518c460cd3cf718bc, type: 3}
+  safeRollColor: {r: 0.16, g: 0.75, b: 0.24, a: 1}
+  poisonRollColor: {r: 0.86, g: 0.18, b: 0.18, a: 1}
+  resultsWinColor: {r: 0.98, g: 0.84, b: 0.26, a: 1}
+  resultsLoseColor: {r: 0.9, g: 0.15, b: 0.2, a: 1}
+  enableDebugLogs: 1
+--- !u!114 &4381669862203905363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740593285411036697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8c3de432e8d4ee58a95ac915f62ac99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Runtime.PoisonDiceResultsView
+  headerLabel: {fileID: 0}
+  finalScoreLabel: {fileID: 0}
+  outcomeLabel: {fileID: 0}
+--- !u!114 &8540653985387730871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740593285411036697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d95eaa3b70b47df81ca1fc4a26ce0ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Runtime.PoisonDiceHudView
+  titlePanel: {fileID: 2257827938249745281, guid: 3a27d667e600c4d8aa78c96db422ee2b, type: 3}
+  gameplayPanel: {fileID: 552873065914663094, guid: eeb7291b4284049c994da6ecccbd5d87, type: 3}
+  resultsPanel: {fileID: 0}
+  poisonDiceLabel: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+  scoreLabel: {fileID: 7671417542386403844, guid: 9360f42668a484888833fbb96d586f65, type: 3}
+  lastRollLabel: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+  statusLabel: {fileID: 0}
+--- !u!114 &5720641338077613080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740593285411036697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f31dd137edce4329999f98b0d6bf2d9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Runtime.PoisonDiceSceneBootstrap
+  controller: {fileID: 952991856688946183, guid: eeb7291b4284049c994da6ecccbd5d87, type: 3}
+  hudView: {fileID: -7947423044786739073, guid: eeb7291b4284049c994da6ecccbd5d87, type: 3}
+  resultsView: {fileID: 0}
