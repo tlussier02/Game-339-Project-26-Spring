@@ -1,11 +1,24 @@
 fileFormatVersion: 2
-guid: 9f8b5b9b1d2c4d0eaab9a2f7b6c3d8e12
+guid: e05f2b93f135b4864a77cfe67f87abbf
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - titlePanel: {fileID: 2257827938249745281, guid: 3a27d667e600c4d8aa78c96db422ee2b, type: 3}
+  - gameplayPanel: {fileID: 552873065914663094, guid: eeb7291b4284049c994da6ecccbd5d87, type: 3}
+  - resultsPanel: {instanceID: 0}
+  - poisonDiceText: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+  - scoreText: {fileID: 7671417542386403844, guid: 9360f42668a484888833fbb96d586f65, type: 3}
+  - lastRollText: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+  - resultsHeaderText: {instanceID: 0}
+  - finalScoreText: {instanceID: 0}
+  - statusText: {instanceID: 0}
+  - startButton: {fileID: 8631075106636891475, guid: 2d76d6999dd3b47fa8bb4ebebfff09f5, type: 3}
+  - rollButton: {fileID: 3131102731390812257, guid: 069fccb2e4fa14eb0b05a2d6cb052fd6, type: 3}
+  - giveUpButton: {fileID: 88423685004572457, guid: b1b315d37763e48d79328387e72eba3f, type: 3}
+  - restartButton: {fileID: 1866664939635508656, guid: a41d3d07dedab48518c460cd3cf718bc, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
