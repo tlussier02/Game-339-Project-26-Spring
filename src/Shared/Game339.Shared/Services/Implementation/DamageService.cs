@@ -1,0 +1,27 @@
+using Game339.Shared.Diagnostics;
+using Game339.Shared.Models;
+
+namespace Game339.Shared.Services.Implementation;
+
+public class DamageService : IDamageService
+{
+    private readonly IGameLog _gameLog;
+
+    public DamageService(IGameLog gameLog)
+    {
+        _gameLog = gameLog ?? throw new ArgumentNullException(nameof(gameLog));
+    }
+
+    public int CalculateDamage(Character attacker, Character defender)
+    {
+        var damage = attacker.Damage.Value - defender.Armor.Value;
+        _gameLog.Info($"{attacker.Name} attacked {defender.Name} for {damage} damage");
+        return damage;
+    }
+
+    public void ApplyDamage(Character target, int damage)
+    {
+        _gameLog.Info($"{target.Name} takes {damage} damage");
+        target.Health.Value -= damage;
+    }
+}
