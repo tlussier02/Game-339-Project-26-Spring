@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8598705347070829292
 RectTransform:
   m_ObjectHideFlags: 0
@@ -106,6 +106,7 @@ MonoBehaviour:
   poisonRollColor: {r: 0.86, g: 0.18, b: 0.18, a: 1}
   resultsWinColor: {r: 0.98, g: 0.84, b: 0.26, a: 1}
   resultsLoseColor: {r: 0.9, g: 0.15, b: 0.2, a: 1}
+  enableDebugLogs: 1
 --- !u!114 &-7947423044786739073
 MonoBehaviour:
   m_ObjectHideFlags: 0
