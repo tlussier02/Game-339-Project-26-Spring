@@ -6,13 +6,6 @@ namespace Game.Runtime
 {
     public class PoisonDiceGameController : MonoBehaviour
     {
-        private enum GameState
-        {
-            Title,
-            Playing,
-            Results
-        }
-
         [Header("Panels")]
         [SerializeField] private GameObject titlePanel;
         [SerializeField] private GameObject gameplayPanel;
@@ -41,11 +34,12 @@ namespace Game.Runtime
         [Header("Diagnostics")]
         [SerializeField] private bool enableDebugLogs = true;
 
-        private GameState _state = GameState.Title;
-        private int _poisonDice;
-        private int _score;
         private IGameLogger _logger = NullGameLogger.Instance;
         private bool _hasInjectedLogger;
+        private PoisonDiceGameModel _model;
+        private PoisonDiceScreenViewModel _viewModel;
+        private PoisonDiceHudView _hudView;
+        private PoisonDiceResultsView _resultsView;
 
         private void Awake()
         {
@@ -55,6 +49,30 @@ namespace Game.Runtime
                     ? new UnityDebugGameLogger("PoisonDice", this)
                     : NullGameLogger.Instance;
             }
+
+            _hudView = GetComponent<PoisonDiceHudView>();
+            _resultsView = GetComponent<PoisonDiceResultsView>();
+            _model = new PoisonDiceGameModel(RollDie, _logger);
+            _viewModel = new PoisonDiceScreenViewModel(
+                _model,
+                safeRollColor,
+                poisonRollColor,
+                resultsWinColor,
+                resultsLoseColor);
+
+            _hudView?.Initialize(
+                titlePanel,
+                gameplayPanel,
+                resultsPanel,
+                poisonDiceText,
+                scoreText,
+                lastRollText,
+                statusText,
+                resultsHeaderText,
+                finalScoreText,
+                statusText);
+
+            _resultsView?.Initialize(resultsHeaderText, finalScoreText, statusText);
         }
 
         private void Start()
@@ -62,10 +80,15 @@ namespace Game.Runtime
             startButton?.onClick.AddListener(StartNewRound);
             rollButton?.onClick.AddListener(RollDice);
             giveUpButton?.onClick.AddListener(GiveUp);
-            restartButton?.onClick.AddListener(StartNewRound);
+            restartButton?.onClick.AddListener(RestartRound);
 
-            _logger.Log("Controller started. Waiting on the title screen.");
-            ShowState(GameState.Title);
+            if (_viewModel != null)
+            {
+                _viewModel.Changed += RefreshView;
+            }
+
+            _logger.Log("MVVM composition root started. Waiting on the title screen.");
+            _viewModel?.Initialize();
         }
 
         private void OnDestroy()
@@ -73,78 +96,39 @@ namespace Game.Runtime
             startButton?.onClick.RemoveListener(StartNewRound);
             rollButton?.onClick.RemoveListener(RollDice);
             giveUpButton?.onClick.RemoveListener(GiveUp);
-            restartButton?.onClick.RemoveListener(StartNewRound);
+            restartButton?.onClick.RemoveListener(RestartRound);
+
+            if (_viewModel != null)
+            {
+                _viewModel.Changed -= RefreshView;
+            }
         }
 
         public void SetLogger(IGameLogger logger)
         {
             _logger = logger ?? NullGameLogger.Instance;
             _hasInjectedLogger = logger != null;
+            _model?.SetLogger(_logger);
         }
 
         private void StartNewRound()
         {
-            _poisonDice = RollDie();
-            _score = 0;
-
-            SetText(lastRollText, "Roll to begin");
-            SetText(statusText, "Avoid this number to keep streaking points");
-            SetTextColor(statusText, Color.white);
-
-            UpdateScoreDisplay();
-            UpdatePoisonDisplay();
-            _logger.Log("Started a new round. Poison number is " + _poisonDice + ". Score reset to 0.");
-            ShowState(GameState.Playing);
+            _viewModel?.StartGame();
         }
 
         private void RollDice()
         {
-            if (_state != GameState.Playing)
-            {
-                _logger.LogWarning("Ignored roll input because the game is in state " + _state + ".");
-                return;
-            }
-
-            var roll = RollDie();
-            if (roll == _poisonDice)
-            {
-                SetText(lastRollText, $"Rolled {roll} — poisoned!");
-                SetTextColor(lastRollText, poisonRollColor);
-                _logger.LogWarning("Player rolled " + roll + ", matched the poison number, and lost the round.");
-                ShowGameOver(0, $"You hit the poison number ({_poisonDice}).");
-                return;
-            }
-
-            _score += roll;
-            SetText(lastRollText, $"Rolled {roll}");
-            SetTextColor(lastRollText, safeRollColor);
-            UpdateScoreDisplay();
-            SetText(statusText, "Nice roll. Keep going or give up.");
-            _logger.Log("Player rolled " + roll + " safely. Score is now " + _score + ".");
+            _viewModel?.Roll();
         }
 
         private void GiveUp()
         {
-            if (_state != GameState.Playing)
-            {
-                _logger.LogWarning("Ignored give-up input because the game is in state " + _state + ".");
-                return;
-            }
-
-            _logger.Log("Player cashed out with " + _score + " points.");
-            ShowGameOver(_score, "You chose to cash out.");
+            _viewModel?.GiveUp();
         }
 
-        private void ShowGameOver(int finalScore, string message)
+        private void RestartRound()
         {
-            SetText(finalScoreText, $"Final Score: {finalScore}");
-            SetText(resultsHeaderText, finalScore == 0
-                ? "Bust"
-                : "Round Over");
-            SetText(statusText, message);
-            SetTextColor(statusText, finalScore == 0 ? resultsLoseColor : resultsWinColor);
-            _logger.Log("Round finished with final score " + finalScore + ". " + message);
-            ShowState(GameState.Results);
+            _viewModel?.Restart();
         }
 
         private int RollDie()
@@ -152,40 +136,58 @@ namespace Game.Runtime
             return Random.Range(1, 7);
         }
 
-        private void ShowState(GameState nextState)
+        private void RefreshView()
         {
-            var previousState = _state;
-            _state = nextState;
-
-            if (titlePanel != null) titlePanel.SetActive(_state == GameState.Title);
-            if (gameplayPanel != null) gameplayPanel.SetActive(_state == GameState.Playing);
-            if (resultsPanel != null) resultsPanel.SetActive(_state == GameState.Results);
-
-            if (startButton != null) startButton.interactable = _state == GameState.Title;
-            if (rollButton != null) rollButton.interactable = _state == GameState.Playing;
-            if (giveUpButton != null) giveUpButton.interactable = _state == GameState.Playing;
-            if (restartButton != null) restartButton.interactable = _state == GameState.Results;
-
-            UpdatePoisonDisplay();
-            UpdateScoreDisplay();
-
-            if (previousState != nextState)
+            if (_viewModel == null)
             {
-                _logger.Log("State changed from " + previousState + " to " + nextState + ".");
+                return;
             }
+
+            if (_hudView != null)
+            {
+                _hudView.Render(_viewModel);
+            }
+            else
+            {
+                RenderLegacyView();
+            }
+
+            _resultsView?.Render(_viewModel);
+            ApplyButtonState();
         }
 
-        private void UpdatePoisonDisplay()
+        private void ApplyButtonState()
         {
-            SetText(
-                poisonDiceText,
-                $"Poison Dice: {(_state == GameState.Title ? "?" : _poisonDice.ToString())}"
-            );
+            if (_viewModel == null)
+            {
+                return;
+            }
+
+            if (startButton != null) startButton.interactable = _viewModel.CanStart;
+            if (rollButton != null) rollButton.interactable = _viewModel.CanRoll;
+            if (giveUpButton != null) giveUpButton.interactable = _viewModel.CanGiveUp;
+            if (restartButton != null) restartButton.interactable = _viewModel.CanRestart;
         }
 
-        private void UpdateScoreDisplay()
+        private void RenderLegacyView()
         {
-            SetText(scoreText, $"Score: {_score}");
+            if (_viewModel == null)
+            {
+                return;
+            }
+
+            if (titlePanel != null) titlePanel.SetActive(_viewModel.ShowTitle);
+            if (gameplayPanel != null) gameplayPanel.SetActive(_viewModel.ShowGameplay);
+            if (resultsPanel != null) resultsPanel.SetActive(_viewModel.ShowResults);
+
+            SetText(poisonDiceText, _viewModel.PoisonLabel);
+            SetText(scoreText, _viewModel.ScoreLabel);
+            SetText(lastRollText, _viewModel.LastRollLabel);
+            SetText(resultsHeaderText, _viewModel.ResultsHeader);
+            SetText(finalScoreText, _viewModel.FinalScoreLabel);
+            SetText(statusText, _viewModel.StatusLabel);
+            SetTextColor(lastRollText, _viewModel.LastRollColor);
+            SetTextColor(statusText, _viewModel.StatusColor);
         }
 
         private static void SetText(TMP_Text text, string value)

@@ -15,6 +15,33 @@ namespace Game.Runtime
         [SerializeField] private TMP_Text scoreLabel;
         [SerializeField] private TMP_Text lastRollLabel;
         [SerializeField] private TMP_Text statusLabel;
+        [SerializeField] private TMP_Text resultsHeaderLabel;
+        [SerializeField] private TMP_Text finalScoreLabel;
+        [SerializeField] private TMP_Text outcomeLabel;
+
+        public void Initialize(
+            GameObject title,
+            GameObject gameplay,
+            GameObject results,
+            TMP_Text poison,
+            TMP_Text score,
+            TMP_Text lastRoll,
+            TMP_Text status,
+            TMP_Text resultsHeader,
+            TMP_Text finalScore,
+            TMP_Text outcome)
+        {
+            titlePanel = title != null ? title : titlePanel;
+            gameplayPanel = gameplay != null ? gameplay : gameplayPanel;
+            resultsPanel = results != null ? results : resultsPanel;
+            poisonDiceLabel = poison != null ? poison : poisonDiceLabel;
+            scoreLabel = score != null ? score : scoreLabel;
+            lastRollLabel = lastRoll != null ? lastRoll : lastRollLabel;
+            statusLabel = status != null ? status : statusLabel;
+            resultsHeaderLabel = resultsHeader != null ? resultsHeader : resultsHeaderLabel;
+            finalScoreLabel = finalScore != null ? finalScore : finalScoreLabel;
+            outcomeLabel = outcome != null ? outcome : outcomeLabel;
+        }
 
         public void ShowState(PoisonDiceRoundState state)
         {
@@ -23,18 +50,24 @@ namespace Game.Runtime
             if (resultsPanel != null) resultsPanel.SetActive(state == PoisonDiceRoundState.Results);
         }
 
-        public void Render(PoisonDiceGameStateData state)
+        public void Render(PoisonDiceScreenViewModel viewModel)
         {
-            SetText(poisonDiceLabel, state.RoundState == PoisonDiceRoundState.Title
-                ? "Poison Dice: ?"
-                : $"Poison Dice: {state.PoisonValue}");
-            SetText(scoreLabel, $"Score: {state.CurrentScore}");
-            SetText(lastRollLabel, state.LastRoll <= 0
-                ? "Roll to begin"
-                : $"Last Roll: {state.LastRoll}");
-            SetText(statusLabel, state.DidBust
-                ? "Poison hit. Round lost."
-                : "Skeleton HUD ready for scene wiring.");
+            if (viewModel == null)
+            {
+                return;
+            }
+
+            ShowState(viewModel.RoundState);
+            SetText(poisonDiceLabel, viewModel.PoisonLabel);
+            SetText(scoreLabel, viewModel.ScoreLabel);
+            SetText(lastRollLabel, viewModel.LastRollLabel);
+            SetText(statusLabel, viewModel.StatusLabel);
+            SetText(resultsHeaderLabel, viewModel.ResultsHeader);
+            SetText(finalScoreLabel, viewModel.FinalScoreLabel);
+            SetText(outcomeLabel, viewModel.OutcomeLabel);
+            SetTextColor(lastRollLabel, viewModel.LastRollColor);
+            SetTextColor(statusLabel, viewModel.StatusColor);
+            SetTextColor(outcomeLabel, viewModel.StatusColor);
         }
 
         private static void SetText(TMP_Text target, string value)
@@ -42,6 +75,14 @@ namespace Game.Runtime
             if (target != null)
             {
                 target.text = value;
+            }
+        }
+
+        private static void SetTextColor(TMP_Text target, Color value)
+        {
+            if (target != null)
+            {
+                target.color = value;
             }
         }
     }
