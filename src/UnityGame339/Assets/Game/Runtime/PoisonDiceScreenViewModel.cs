@@ -128,7 +128,7 @@ namespace Game.Runtime
 
         public void Restart()
         {
-            _model.ResetToTitle();
+            _model.StartNewRound();
             RaiseChanged();
         }
 
