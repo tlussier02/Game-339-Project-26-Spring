@@ -56,8 +56,9 @@ namespace Game.Runtime
             {
                 return;
             }
-
+            
             ShowState(viewModel.RoundState);
+            
             SetText(poisonDiceLabel, viewModel.PoisonLabel);
             SetText(scoreLabel, viewModel.ScoreLabel);
             SetText(lastRollLabel, viewModel.LastRollLabel);

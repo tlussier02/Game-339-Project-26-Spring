@@ -400,9 +400,9 @@ MonoBehaviour:
   titlePanel: {fileID: 2064978365}
   gameplayPanel: {fileID: 2025703277}
   resultsPanel: {fileID: 1939771943}
-  poisonDiceText: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
-  scoreText: {fileID: 7671417542386403844, guid: 9360f42668a484888833fbb96d586f65, type: 3}
-  lastRollText: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+  poisonDiceText: {fileID: 2075583483}
+  scoreText: {fileID: 1765811676}
+  lastRollText: {fileID: 2071494903}
   resultsHeaderText: {fileID: 1258511727}
   finalScoreText: {fileID: 342736598}
   statusText: {fileID: 0}
@@ -986,6 +986,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5326212820900187985, guid: 9360f42668a484888833fbb96d586f65, type: 3}
   m_PrefabInstance: {fileID: 8844239293903730604}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1765811676 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7671417542386403844, guid: 9360f42668a484888833fbb96d586f65, type: 3}
+  m_PrefabInstance: {fileID: 8844239293903730604}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1853074929 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4203150333629601493, guid: 3a27d667e600c4d8aa78c96db422ee2b, type: 3}
@@ -1237,11 +1248,33 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3262080783455789128, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
   m_PrefabInstance: {fileID: 59119280720884804}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2071494903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+  m_PrefabInstance: {fileID: 59119280720884804}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &2075583482 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3779484820754552106, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
   m_PrefabInstance: {fileID: 2405065574719697095}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2075583483 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+  m_PrefabInstance: {fileID: 2405065574719697095}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &59119280720884804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1334,6 +1367,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: lastrollText
       objectReference: {fileID: 0}
+    - target: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1357,7 +1394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 552873065914663094, guid: eeb7291b4284049c994da6ecccbd5d87, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 952991856688946183, guid: eeb7291b4284049c994da6ecccbd5d87, type: 3}
       propertyPath: titlePanel
