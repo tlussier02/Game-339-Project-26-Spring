@@ -40,6 +40,7 @@ namespace Game.Runtime
         private PoisonDiceScreenViewModel _viewModel;
         private PoisonDiceHudView _hudView;
         private PoisonDiceResultsView _resultsView;
+        private PoisonDiceAudioView _audioView;
 
         private void Awake()
         {
@@ -52,6 +53,7 @@ namespace Game.Runtime
 
             _hudView = GetComponent<PoisonDiceHudView>();
             _resultsView = GetComponent<PoisonDiceResultsView>();
+            _audioView = GetComponent<PoisonDiceAudioView>();
             _model = new PoisonDiceGameModel(RollDie, _logger);
             _viewModel = new PoisonDiceScreenViewModel(
                 _model,
@@ -153,6 +155,7 @@ namespace Game.Runtime
             }
 
             _resultsView?.Render(_viewModel);
+            _audioView?.Render(_viewModel);
             ApplyButtonState();
         }
 
