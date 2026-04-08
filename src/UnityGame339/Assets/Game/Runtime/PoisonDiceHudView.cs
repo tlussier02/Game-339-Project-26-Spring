@@ -13,6 +13,8 @@ namespace Game.Runtime
         [Header("Labels")]
         [SerializeField] private TMP_Text poisonDiceLabel;
         [SerializeField] private TMP_Text scoreLabel;
+        [SerializeField] private TMP_Text gameplayHighScoreLabel;
+        [SerializeField] private TMP_Text resultsHighScoreLabel;
         [SerializeField] private TMP_Text lastRollLabel;
         [SerializeField] private TMP_Text statusLabel;
         [SerializeField] private TMP_Text resultsHeaderLabel;
@@ -25,6 +27,8 @@ namespace Game.Runtime
             GameObject results,
             TMP_Text poison,
             TMP_Text score,
+            TMP_Text gameplayHighScore,
+            TMP_Text resultsHighScore,
             TMP_Text lastRoll,
             TMP_Text status,
             TMP_Text resultsHeader,
@@ -36,6 +40,8 @@ namespace Game.Runtime
             resultsPanel = results != null ? results : resultsPanel;
             poisonDiceLabel = poison != null ? poison : poisonDiceLabel;
             scoreLabel = score != null ? score : scoreLabel;
+            gameplayHighScoreLabel = gameplayHighScore != null ? gameplayHighScore : gameplayHighScoreLabel;
+            resultsHighScoreLabel = resultsHighScore != null ? resultsHighScore : resultsHighScoreLabel;
             lastRollLabel = lastRoll != null ? lastRoll : lastRollLabel;
             statusLabel = status != null ? status : statusLabel;
             resultsHeaderLabel = resultsHeader != null ? resultsHeader : resultsHeaderLabel;
@@ -61,6 +67,8 @@ namespace Game.Runtime
             
             SetText(poisonDiceLabel, viewModel.PoisonLabel);
             SetText(scoreLabel, viewModel.ScoreLabel);
+            SetText(gameplayHighScoreLabel, viewModel.HighScoreLabel);
+            SetText(resultsHighScoreLabel, viewModel.HighScoreLabel);
             SetText(lastRollLabel, viewModel.LastRollLabel);
             SetText(statusLabel, viewModel.StatusLabel);
             SetText(resultsHeaderLabel, viewModel.ResultsHeader);

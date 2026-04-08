@@ -18,6 +18,7 @@ namespace Game.Runtime
         public int FinalScore;
         public int LastRoll;
         public bool DidBust;
+        public int HighScore;
 
         public void ResetToTitle()
         {
@@ -58,6 +59,11 @@ namespace Game.Runtime
             FinalScore = CurrentScore;
             DidBust = false;
             RoundState = PoisonDiceRoundState.Results;
+
+            if (FinalScore > HighScore)
+            {
+                HighScore = FinalScore;
+            }
         }
     }
 }

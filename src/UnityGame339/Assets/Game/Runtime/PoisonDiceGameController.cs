@@ -14,6 +14,8 @@ namespace Game.Runtime
         [Header("UI")]
         [SerializeField] private TextMeshProUGUI poisonDiceText;
         [SerializeField] private TextMeshProUGUI scoreText;
+        [SerializeField] private TextMeshProUGUI gameplayHighScoreText;
+        [SerializeField] private TextMeshProUGUI resultsHighScoreText;
         [SerializeField] private TextMeshProUGUI lastRollText;
         [SerializeField] private TextMeshProUGUI resultsHeaderText;
         [SerializeField] private TextMeshProUGUI finalScoreText;
@@ -40,6 +42,7 @@ namespace Game.Runtime
         private PoisonDiceScreenViewModel _viewModel;
         private PoisonDiceHudView _hudView;
         private PoisonDiceResultsView _resultsView;
+        private PoisonDiceAudioView _audioView;
 
         private void Awake()
         {
@@ -52,6 +55,7 @@ namespace Game.Runtime
 
             _hudView = GetComponent<PoisonDiceHudView>();
             _resultsView = GetComponent<PoisonDiceResultsView>();
+            _audioView = GetComponent<PoisonDiceAudioView>();
             _model = new PoisonDiceGameModel(RollDie, _logger);
             _viewModel = new PoisonDiceScreenViewModel(
                 _model,
@@ -66,11 +70,13 @@ namespace Game.Runtime
                 resultsPanel,
                 poisonDiceText,
                 scoreText,
+                gameplayHighScoreText,
+                resultsHighScoreText,
                 lastRollText,
                 statusText,
                 resultsHeaderText,
                 finalScoreText,
-                statusText);
+                statusText); // does this need to be smth else?
 
             _resultsView?.Initialize(resultsHeaderText, finalScoreText, statusText);
         }
@@ -182,6 +188,8 @@ namespace Game.Runtime
 
             SetText(poisonDiceText, _viewModel.PoisonLabel);
             SetText(scoreText, _viewModel.ScoreLabel);
+            SetText(gameplayHighScoreText, _viewModel.HighScoreLabel);
+            SetText(resultsHighScoreText, _viewModel.HighScoreLabel);
             SetText(lastRollText, _viewModel.LastRollLabel);
             SetText(resultsHeaderText, _viewModel.ResultsHeader);
             SetText(finalScoreText, _viewModel.FinalScoreLabel);
