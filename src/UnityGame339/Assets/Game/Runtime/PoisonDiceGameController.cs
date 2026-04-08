@@ -155,7 +155,6 @@ namespace Game.Runtime
             }
 
             _resultsView?.Render(_viewModel);
-            _audioView?.Render(_viewModel);
             ApplyButtonState();
         }
 

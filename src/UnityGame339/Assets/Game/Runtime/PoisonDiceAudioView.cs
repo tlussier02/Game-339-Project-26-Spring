@@ -9,20 +9,14 @@ public class PoisonDiceAudioView : MonoBehaviour
 
     private PoisonDiceRoundState _currentState;
 
-    public void Render(PoisonDiceScreenViewModel viewModel)
+    private void Awake()
     {
-        if (viewModel.RoundState != _currentState)
+        if (bgmSource != null && gameplayBGM != null)
         {
-            _currentState = viewModel.RoundState;
-            PlayBGMForState(_currentState);
+            bgmSource.clip = gameplayBGM;
+            bgmSource.loop = true;
+            bgmSource.Play();
         }
-    }
-
-    private void PlayBGMForState(PoisonDiceRoundState state)
-    {
-        bgmSource.clip = gameplayBGM;
-        bgmSource.Play();
-    
     }
 
 }
