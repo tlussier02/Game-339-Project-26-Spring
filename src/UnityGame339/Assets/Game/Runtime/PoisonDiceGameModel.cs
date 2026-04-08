@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using UnityEngine;
 
 namespace Game.Runtime
 {
@@ -7,6 +9,7 @@ namespace Game.Runtime
         private readonly Func<int> _rollDie;
         private PoisonDiceGameStateData _state;
         private IGameLogger _logger;
+        private PoisonDiceAnimations _animation;
 
         public PoisonDiceGameModel(Func<int> rollDie, IGameLogger logger = null)
         {
@@ -43,7 +46,7 @@ namespace Game.Runtime
                 _logger.LogWarning("Ignored roll input because the game is in state " + _state.RoundState + ".");
                 return;
             }
-
+            
             var roll = _rollDie();
             if (roll == _state.PoisonValue)
             {

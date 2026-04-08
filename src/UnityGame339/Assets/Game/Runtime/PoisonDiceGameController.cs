@@ -26,7 +26,7 @@ namespace Game.Runtime
         [SerializeField] private Button rollButton;
         [SerializeField] private Button giveUpButton;
         [SerializeField] private Button restartButton;
-
+        
         [Header("Result Styling")]
         [SerializeField] private Color safeRollColor = new Color(0.16f, 0.75f, 0.24f);
         [SerializeField] private Color poisonRollColor = new Color(0.86f, 0.18f, 0.18f);
@@ -124,6 +124,7 @@ namespace Game.Runtime
 
         private void RollDice()
         {
+            
             _viewModel?.Roll();
         }
 
