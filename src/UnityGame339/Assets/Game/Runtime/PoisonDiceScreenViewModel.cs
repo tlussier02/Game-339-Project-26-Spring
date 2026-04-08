@@ -42,6 +42,7 @@ namespace Game.Runtime
             : $"Poison Dice: {_model.State.PoisonValue}";
 
         public string ScoreLabel => $"Score: {_model.State.CurrentScore}";
+        public string HighScoreLabel => $"High Score: {_model.State.HighScore}";
 
         public string LastRollLabel
         {
