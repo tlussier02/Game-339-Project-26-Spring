@@ -1,21 +1,36 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SpriteBehavior : MonoBehaviour
 {
     [Header("Dice")] 
     [SerializeField] Sprite[] regularSprites;
     [SerializeField] Sprite[] poisonSprites;
-    private Sprite newSprite;
+    [SerializeField] Sprite newDiceFaceR;
+    [SerializeField] Sprite newDiceFaceP;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void RollRegularDice()
     {
+        newDiceFaceR = regularSprites[Random.Range(0, regularSprites.Length)];
+        gameObject.GetComponent<SpriteRenderer>().sprite = newDiceFaceR;
+    }
+    
+    public void RollPoisonDice()
+    {
+        newDiceFaceP = poisonSprites[Random.Range(0, poisonSprites.Length)];
         
+        gameObject.GetComponent<SpriteRenderer>().sprite = newDiceFaceP;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void checkForBust()
     {
-        
+        int positionR = Array.IndexOf(regularSprites, newDiceFaceR);
+        int positionP = Array.IndexOf(poisonSprites, newDiceFaceP);
+
+        if (positionR == positionP)
+        {
+            //end game//
+        }
     }
 }
