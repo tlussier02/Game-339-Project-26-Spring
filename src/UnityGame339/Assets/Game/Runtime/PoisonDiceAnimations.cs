@@ -18,8 +18,10 @@ public class PoisonDiceAnimations : MonoBehaviour
 
     public void PlayPRAnimation()
     {
-        _animatorPoison.SetBool("isRollingPoison", true);
         poisonDice.SetActive(true);
+        _animatorPoison.SetBool("isRollingPoison", true);
+        // poison dice status set to false at start of game
+        // when player hits start, have this animation play
         
     }
     public void StopPRAnimation()
@@ -29,8 +31,10 @@ public class PoisonDiceAnimations : MonoBehaviour
     
     public void PlayRRAnimation()
     {
-        _animatorRegular.SetBool("isRegularRolling", true);
         regularDice.SetActive(true);
+        _animatorRegular.SetBool("isRegularRolling", true);
+        // regular dice status set to false at start of game
+        // when player hits roll, have this animation play
     }
     public void StopRRAnimation()
     {
@@ -40,5 +44,7 @@ public class PoisonDiceAnimations : MonoBehaviour
     public void ShowFireAnimation()
     {
         fireAnimation.SetActive(true);
+        // fire panel status set to false at start of game
+        // when player reaches a new highscore, while actively playing the game, have this animation play
     }
 }
