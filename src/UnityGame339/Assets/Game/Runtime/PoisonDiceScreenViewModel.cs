@@ -79,7 +79,7 @@ namespace Game.Runtime
             }
         }
 
-        public string ResultsHeader => _model.State.DidBust ? "Bust" : "Round Over";
+        public string ResultsHeader => _model.State.DidBust ? "Bust - You DIE'd!" : "Round Over";
         public string FinalScoreLabel => $"Final Score: {_model.State.FinalScore}";
 
         public string OutcomeLabel => _model.State.DidBust
