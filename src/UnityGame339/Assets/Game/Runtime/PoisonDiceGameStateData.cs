@@ -19,6 +19,16 @@ namespace Game.Runtime
         public int LastRoll;
         public bool DidBust;
 
+        public void ResetToTitle()
+        {
+            RoundState = PoisonDiceRoundState.Title;
+            PoisonValue = 0;
+            CurrentScore = 0;
+            FinalScore = 0;
+            LastRoll = 0;
+            DidBust = false;
+        }
+
         public void ResetForNewRound(int poisonValue)
         {
             RoundState = PoisonDiceRoundState.Playing;
