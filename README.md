@@ -11,6 +11,9 @@ https://www.figma.com/design/bLceplAYaAnO83HaENjU3Y/match-board-wireframe?node-i
 
 https://docs.google.com/document/d/1111OR8xVApTQpESf5skP_-rV4vf_S8RYE48flwblzLk/edit?usp=sharing
 
+# BGM Music Asset - royalty free
+https://dova-s.jp/en/bgm/detail/9618/download
+
 # Project Stack
 
 - Unity client project: `src/UnityGame339`

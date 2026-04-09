@@ -20,6 +20,10 @@ namespace Game.Runtime
         [SerializeField] private TMP_Text resultsHeaderLabel;
         [SerializeField] private TMP_Text finalScoreLabel;
         [SerializeField] private TMP_Text outcomeLabel;
+        
+        [Header("Dice")]
+        [SerializeField] private GameObject regularDice;
+        [SerializeField] private GameObject poisonDice;
 
         public void Initialize(
             GameObject title,
@@ -33,7 +37,10 @@ namespace Game.Runtime
             TMP_Text status,
             TMP_Text resultsHeader,
             TMP_Text finalScore,
+            GameObject regDice,
+            GameObject poisDice,
             TMP_Text outcome)
+        
         {
             titlePanel = title != null ? title : titlePanel;
             gameplayPanel = gameplay != null ? gameplay : gameplayPanel;
@@ -46,6 +53,8 @@ namespace Game.Runtime
             statusLabel = status != null ? status : statusLabel;
             resultsHeaderLabel = resultsHeader != null ? resultsHeader : resultsHeaderLabel;
             finalScoreLabel = finalScore != null ? finalScore : finalScoreLabel;
+            regularDice = regDice != null ? regDice : regularDice;
+            poisonDice = poisDice != null ? poisDice : poisonDice;
             outcomeLabel = outcome != null ? outcome : outcomeLabel;
         }
 

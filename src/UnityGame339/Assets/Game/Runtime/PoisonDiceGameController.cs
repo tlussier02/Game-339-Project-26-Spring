@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Game.Runtime
@@ -26,7 +27,11 @@ namespace Game.Runtime
         [SerializeField] private Button rollButton;
         [SerializeField] private Button giveUpButton;
         [SerializeField] private Button restartButton;
-
+        
+        [Header("Dice")]
+        [SerializeField] private GameObject regularDice;
+        [SerializeField] private GameObject poisonDice;
+        
         [Header("Result Styling")]
         [SerializeField] private Color safeRollColor = new Color(0.16f, 0.75f, 0.24f);
         [SerializeField] private Color poisonRollColor = new Color(0.86f, 0.18f, 0.18f);
@@ -43,6 +48,7 @@ namespace Game.Runtime
         private PoisonDiceHudView _hudView;
         private PoisonDiceResultsView _resultsView;
         private PoisonDiceAudioView _audioView;
+        private SpriteBehavior _spriteBehavior;
 
         private void Awake()
         {
@@ -76,6 +82,8 @@ namespace Game.Runtime
                 statusText,
                 resultsHeaderText,
                 finalScoreText,
+                regularDice,
+                poisonDice,
                 statusText); // does this need to be smth else?
 
             _resultsView?.Initialize(resultsHeaderText, finalScoreText, statusText);
@@ -124,6 +132,7 @@ namespace Game.Runtime
 
         private void RollDice()
         {
+            
             _viewModel?.Roll();
         }
 
