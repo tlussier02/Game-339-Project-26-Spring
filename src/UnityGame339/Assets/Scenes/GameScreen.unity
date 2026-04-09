@@ -330,8 +330,16 @@ PrefabInstance:
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7671417542386403844, guid: 7d858ac1922ace043b025050fece88a5, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671417542386403844, guid: 7d858ac1922ace043b025050fece88a5, type: 3}
       propertyPath: m_fontSizeBase
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671417542386403844, guid: 7d858ac1922ace043b025050fece88a5, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -367,7 +375,6 @@ GameObject:
   - component: {fileID: 406469981}
   - component: {fileID: 406469985}
   - component: {fileID: 406469984}
-  - component: {fileID: 406469986}
   - component: {fileID: 406469987}
   m_Layer: 0
   m_Name: PoisonDiceGameController
@@ -400,6 +407,8 @@ MonoBehaviour:
   resultsHeaderLabel: {fileID: 0}
   finalScoreLabel: {fileID: 0}
   outcomeLabel: {fileID: 0}
+  regularDice: {fileID: 2111798032}
+  poisonDice: {fileID: 503776746}
 --- !u!114 &406469982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,6 +436,8 @@ MonoBehaviour:
   rollButton: {fileID: 926961925}
   giveUpButton: {fileID: 773409343}
   restartButton: {fileID: 816432575}
+  regularDice: {fileID: 2111798032}
+  poisonDice: {fileID: 503776746}
   safeRollColor: {r: 0.16, g: 0.75, b: 0.24, a: 1}
   poisonRollColor: {r: 0.86, g: 0.18, b: 0.18, a: 1}
   resultsWinColor: {r: 0.98, g: 0.84, b: 0.26, a: 1}
@@ -558,23 +569,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PoisonDiceAudioView
   bgmSource: {fileID: 406469984}
   gameplayBGM: {fileID: 8300000, guid: 264b4970a8f6b174ca3eb4a773573c6d, type: 3}
---- !u!114 &406469986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406469978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 361fb9624755341d58e4fcadcabe8be3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PoisonDiceAnimations
-  _animatorRegular: {fileID: 448024774}
-  _animatorPoison: {fileID: 2108870403}
-  fireAnimation: {fileID: 2019038397}
-  regularDice: {fileID: 0}
-  poisonDice: {fileID: 0}
 --- !u!114 &406469987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,8 +595,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b0cded8c789324ecf9959e80842073ef, type: 3}
   - {fileID: 21300000, guid: 8ac15ee537aba446e9fe9e5c9f8566fd, type: 3}
   - {fileID: 21300000, guid: d7db89cdc9b044171b5e18f6abb30e17, type: 3}
-  newDiceFaceR: {fileID: 0}
-  newDiceFaceP: {fileID: 0}
+  newDiceFaceR: {fileID: 21300000, guid: 954b90302cea544fea8d1e947d46f24e, type: 3}
+  newDiceFaceP: {fileID: 21300000, guid: e6b767338116b4799a3f9272ca8ade84, type: 3}
   poisonDice: {fileID: 503776746}
   regularDice: {fileID: 2111798032}
 --- !u!1 &448024768 stripped
@@ -715,7 +709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2257827938249745281, guid: 3a27d667e600c4d8aa78c96db422ee2b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3739323481593959863, guid: 3a27d667e600c4d8aa78c96db422ee2b, type: 3}
       propertyPath: m_Type
@@ -1145,6 +1139,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2025703278}
     m_Modifications:
+    - target: {fileID: 214062032766026297, guid: fe0375acf826d4a4797fe572c33093b4, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cdc8463b484ed4d6680a78f24d61823b, type: 3}
     - target: {fileID: 529461528629058722, guid: fe0375acf826d4a4797fe572c33093b4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1833,6 +1831,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8590299436015436223, guid: e167d377cb6d34a4fba21eb602587e7f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 44d71b9f945cf42bd8d5f3bed03193e3, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1887,7 +1889,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 552873065914663094, guid: 347ae7e364fef5f4e84bca1d09328131, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4566772258916713966, guid: 347ae7e364fef5f4e84bca1d09328131, type: 3}
       propertyPath: m_Type
@@ -2448,7 +2450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3262080783455789128, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 250
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3262080783455789128, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2467,8 +2469,28 @@ PrefabInstance:
       value: lastrollText
       objectReference: {fileID: 0}
     - target: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.24528301
+      objectReference: {fileID: 0}
+    - target: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.11529188
+      objectReference: {fileID: 0}
+    - target: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.07751868
+      objectReference: {fileID: 0}
+    - target: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4294967295
+      value: 4282326292
+      objectReference: {fileID: 0}
+    - target: {fileID: 9017960111133775357, guid: 6beac2ec3c6bd4f5a9a653be512df5f1, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3257,11 +3279,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3779484820754552106, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -12.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3779484820754552106, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 250
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3779484820754552106, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3274,6 +3296,30 @@ PrefabInstance:
     - target: {fileID: 3779484820754552106, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190335
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002995529900029381, guid: efbd37205bf40421c8d16e2ab0709f47, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3386,8 +3432,16 @@ PrefabInstance:
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7155350857677799001, guid: 967ae07a0870279429b3f897cbe3721a, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155350857677799001, guid: 967ae07a0870279429b3f897cbe3721a, type: 3}
       propertyPath: m_fontSizeBase
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155350857677799001, guid: 967ae07a0870279429b3f897cbe3721a, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3703,6 +3757,10 @@ PrefabInstance:
     - target: {fileID: 7671417542386403844, guid: 9360f42668a484888833fbb96d586f65, type: 3}
       propertyPath: m_fontSizeBase
       value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671417542386403844, guid: 9360f42668a484888833fbb96d586f65, type: 3}
+      propertyPath: m_TextWrappingMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7671417542386403844, guid: 9360f42668a484888833fbb96d586f65, type: 3}
       propertyPath: m_HorizontalAlignment
