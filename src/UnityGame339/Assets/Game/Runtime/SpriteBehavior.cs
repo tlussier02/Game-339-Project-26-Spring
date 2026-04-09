@@ -1,66 +1,42 @@
 using System;
 using System.Collections;
+using Game.Runtime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class SpriteBehavior : MonoBehaviour
 {
     [Header("Dice")] 
-    [SerializeField] Sprite[] regularSprites;
-    [SerializeField] Sprite[] poisonSprites;
+    [SerializeField] Sprite[] diceRSprites;
+    [SerializeField] Sprite[] dicePSprites;
     [SerializeField] Sprite newDiceFaceR;
     [SerializeField] Sprite newDiceFaceP;
     
-    private PoisonDiceAnimations _poisonDiceAnimations;
+    public GameObject poisonDice;
+    public GameObject regularDice;
+
+    private PoisonDiceGameModel _poisonDiceGameModel;
     
-    public void RollRegularDice()
+    public void RollRegularDice(int roll)
     {
-        _poisonDiceAnimations.PlayRRAnimation();
-        WaitToChangeRegular();
-        //trying to put a delay on the sprite change, so that it changes in the middle of the animation
-    }
-
-    private void WaitToChangeRegular()
-    {
-        StartCoroutine(ChangeAfterRegularStart(2.5f));
-    }
-
-    private IEnumerator ChangeAfterRegularStart(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        newDiceFaceR = regularSprites[Random.Range(0, regularSprites.Length)];
-        gameObject.GetComponent<SpriteRenderer>().sprite = newDiceFaceR;
-        _poisonDiceAnimations.StopRRAnimation();
+        newDiceFaceR = diceRSprites[roll-1];
+        regularDice.GetComponent<SpriteRenderer>().sprite = newDiceFaceR;
     }
     
-    public void RollPoisonDice()
+    public void RollPoisonDice(int poisonValue)
     {
-        _poisonDiceAnimations.PlayPRAnimation();
-        WaitToChangePoison();
-        //trying to put a delay on the sprite change, so that it changes in the middle of the animation
+        newDiceFaceP = dicePSprites[poisonValue-1];
+        poisonDice.GetComponent<SpriteRenderer>().sprite = newDiceFaceP;
     }
     
-    private void WaitToChangePoison()
-    {
-        StartCoroutine(ChangeAfterPoisonStart(2.5f));
-    }
+    //public void checkForBust()
+    //{
+        //int positionR = Array.IndexOf(regularSprites, DiceFaceR);
+        //int positionP = Array.IndexOf(poisonSprites, DiceFaceP);
 
-    private IEnumerator ChangeAfterPoisonStart(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        newDiceFaceP = poisonSprites[Random.Range(0, poisonSprites.Length)];
-        gameObject.GetComponent<SpriteRenderer>().sprite = newDiceFaceP;
-        _poisonDiceAnimations.StopPRAnimation();
-    }
-
-    public void checkForBust()
-    {
-        int positionR = Array.IndexOf(regularSprites, newDiceFaceR);
-        int positionP = Array.IndexOf(poisonSprites, newDiceFaceP);
-
-        if (positionR == positionP)
-        {
+       // if (positionR == positionP)
+        //{
             //end game//
-        }
-    }
+        //}
+    //}
 }
