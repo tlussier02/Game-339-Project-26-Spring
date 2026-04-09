@@ -9,7 +9,7 @@ namespace Game.Runtime
         private readonly Func<int> _rollDie;
         private PoisonDiceGameStateData _state;
         private IGameLogger _logger;
-        private PoisonDiceAnimations _animation;
+        private SpriteBehavior _spriteBehavior;
 
         public PoisonDiceGameModel(Func<int> rollDie, IGameLogger logger = null)
         {

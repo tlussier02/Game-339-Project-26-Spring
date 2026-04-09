@@ -587,20 +587,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59c45d1485384d82a2681bbd0146f11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteBehavior
-  regularSprites:
+  diceRSprites:
   - {fileID: 21300000, guid: 954b90302cea544fea8d1e947d46f24e, type: 3}
   - {fileID: 21300000, guid: 79a80558605be46a480c8b9ad1c651b8, type: 3}
   - {fileID: 21300000, guid: 492e0b382fce54a68bd063faf3804c96, type: 3}
   - {fileID: 21300000, guid: 3b69bb573e6b740c880056e47f3d64c1, type: 3}
   - {fileID: 21300000, guid: 923200addba45414485eac4f03bb924e, type: 3}
   - {fileID: 21300000, guid: 214b1159161454feea611f861a9a2843, type: 3}
-  poisonSprites:
+  dicePSprites:
   - {fileID: 21300000, guid: e6b767338116b4799a3f9272ca8ade84, type: 3}
   - {fileID: 21300000, guid: ddaa1770858854b298494d6256a2c606, type: 3}
   - {fileID: 21300000, guid: fc9e5525c387f48079ad39394742b30f, type: 3}
   - {fileID: 21300000, guid: b0cded8c789324ecf9959e80842073ef, type: 3}
   - {fileID: 21300000, guid: 8ac15ee537aba446e9fe9e5c9f8566fd, type: 3}
   - {fileID: 21300000, guid: d7db89cdc9b044171b5e18f6abb30e17, type: 3}
+  newDiceFaceR: {fileID: 0}
+  newDiceFaceP: {fileID: 0}
+  poisonDice: {fileID: 503776746}
+  regularDice: {fileID: 2111798032}
 --- !u!1 &448024768 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5872450070605733180, guid: 39b0dfbdc21ce493ab4c714e95ccfbaa, type: 3}
@@ -692,6 +696,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &503776746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8576769897179753358, guid: e167d377cb6d34a4fba21eb602587e7f, type: 3}
+  m_PrefabInstance: {fileID: 1853408816}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &616578591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1230,7 +1239,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 529461528629058722, guid: fe0375acf826d4a4797fe572c33093b4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2071494902}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4145114645363176696, guid: fe0375acf826d4a4797fe572c33093b4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2111798035}
   m_SourcePrefab: {fileID: 100100000, guid: fe0375acf826d4a4797fe572c33093b4, type: 3}
 --- !u!224 &1046093101 stripped
 RectTransform:
@@ -1827,13 +1839,40 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3820160329758495975, guid: e167d377cb6d34a4fba21eb602587e7f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2075583482}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8576769897179753358, guid: e167d377cb6d34a4fba21eb602587e7f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1853408820}
   m_SourcePrefab: {fileID: 100100000, guid: e167d377cb6d34a4fba21eb602587e7f, type: 3}
 --- !u!224 &1853408817 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3820160329758495975, guid: e167d377cb6d34a4fba21eb602587e7f, type: 3}
   m_PrefabInstance: {fileID: 1853408816}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1853408820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503776746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59c45d1485384d82a2681bbd0146f11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteBehavior
+  diceRSprites: []
+  dicePSprites:
+  - {fileID: 21300000, guid: e6b767338116b4799a3f9272ca8ade84, type: 3}
+  - {fileID: 21300000, guid: ddaa1770858854b298494d6256a2c606, type: 3}
+  - {fileID: 21300000, guid: fc9e5525c387f48079ad39394742b30f, type: 3}
+  - {fileID: 21300000, guid: b0cded8c789324ecf9959e80842073ef, type: 3}
+  - {fileID: 21300000, guid: 8ac15ee537aba446e9fe9e5c9f8566fd, type: 3}
+  - {fileID: 21300000, guid: d7db89cdc9b044171b5e18f6abb30e17, type: 3}
+  newDiceFaceR: {fileID: 0}
+  newDiceFaceP: {fileID: 0}
+  poisonDice: {fileID: 503776746}
+  regularDice: {fileID: 0}
 --- !u!1001 &1939771941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2306,6 +2345,35 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &2111798032 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4145114645363176696, guid: fe0375acf826d4a4797fe572c33093b4, type: 3}
+  m_PrefabInstance: {fileID: 1046093100}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2111798035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111798032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59c45d1485384d82a2681bbd0146f11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteBehavior
+  diceRSprites:
+  - {fileID: 21300000, guid: 954b90302cea544fea8d1e947d46f24e, type: 3}
+  - {fileID: 21300000, guid: 79a80558605be46a480c8b9ad1c651b8, type: 3}
+  - {fileID: 21300000, guid: 492e0b382fce54a68bd063faf3804c96, type: 3}
+  - {fileID: 21300000, guid: 3b69bb573e6b740c880056e47f3d64c1, type: 3}
+  - {fileID: 21300000, guid: 923200addba45414485eac4f03bb924e, type: 3}
+  - {fileID: 21300000, guid: 214b1159161454feea611f861a9a2843, type: 3}
+  dicePSprites: []
+  newDiceFaceR: {fileID: 0}
+  newDiceFaceP: {fileID: 0}
+  poisonDice: {fileID: 0}
+  regularDice: {fileID: 2111798032}
 --- !u!1001 &59119280720884804
 PrefabInstance:
   m_ObjectHideFlags: 0
