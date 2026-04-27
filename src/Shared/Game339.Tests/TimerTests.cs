@@ -8,7 +8,7 @@ public class TimerTests
 {
     // imitating the dependency injection
     private FakeTimeProvider _fakeTimeProvider;
-    private Timer _timer;
+    private Game339.Shared.Services.Timer _timer;
 
     [SetUp]
 
