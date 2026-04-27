@@ -1,0 +1,7 @@
+{
+  "name": "com.game339.shared",
+  "displayName": "Game339 Shared",
+  "version": "0.1.0",
+  "unity": "6000.0",
+  "description": "Shared non-Unity runtime types consumed by the Unity project."
+}
