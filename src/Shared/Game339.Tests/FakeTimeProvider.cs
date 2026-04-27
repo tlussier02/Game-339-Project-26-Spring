@@ -1,4 +1,5 @@
-namespace DefaultNamespace;
+using Game339.Shared.Services;
+namespace Game339.Tests;
 
 public class FakeTimeProvider : ITimeProvider
 {
