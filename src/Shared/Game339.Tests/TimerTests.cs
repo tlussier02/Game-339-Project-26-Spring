@@ -7,15 +7,15 @@ namespace Game339.Tests;
 public class TimerTests
 {
     // imitating the dependency injection
-    private FakeTimeProvider _fakeTimeProvider;
-    private Game339.Shared.Services.Timer _timer;
+    private FakeTimeProvider _fakeTimeProvider = null!;
+    private Game339.Shared.Services.Timer _timer = null!;
 
     [SetUp]
 
     public void SetUp()
     {
         _fakeTimeProvider = new FakeTimeProvider();
-        _timer = new Timer(_fakeTimeProvider);
+        _timer = new Game339.Shared.Services.Timer(_fakeTimeProvider);
     }
 
     [Test]
