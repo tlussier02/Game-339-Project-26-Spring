@@ -1,6 +1,7 @@
-namespace Game339.Shared.Services;
-
-public interface ITimeProvider
+namespace Game339.Shared.Services
 {
-    float DeltaTime { get; }
+    public interface ITimeProvider
+    {
+        float DeltaTime { get; }
+    }
 }

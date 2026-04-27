@@ -1,31 +1,32 @@
-namespace Game339.Shared.Services;
-
-public class Timer
+namespace Game339.Shared.Services
 {
-    private readonly ITimeProvider _timeProvider;
-
-    public float Current { get; private set; }
-
-    public Timer(ITimeProvider timeProvider)
+    public class Timer
     {
-        _timeProvider = timeProvider;
-    }
+        private readonly ITimeProvider _timeProvider;
 
-    public void Start(float duration)
-    {
-        Current = duration;
-    }
+        public float Current { get; private set; }
 
-    public void Tick()
-    {
-        if (Current > 0)
+        public Timer(ITimeProvider timeProvider)
         {
-            Current -= _timeProvider.DeltaTime;
+            _timeProvider = timeProvider;
         }
 
-        if (Current < 0)
+        public void Start(float duration)
         {
-            Current = 0;
+            Current = duration;
+        }
+
+        public void Tick()
+        {
+            if (Current > 0)
+            {
+                Current -= _timeProvider.DeltaTime;
+            }
+
+            if (Current < 0)
+            {
+                Current = 0;
+            }
         }
     }
 }
