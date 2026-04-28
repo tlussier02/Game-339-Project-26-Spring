@@ -10,6 +10,7 @@ public class GridPopulator : MonoBehaviour
     
     public void Start()
     {
+        // hi mom
         for (int x = 0; x <= 8; x++)
         {
             for (int y = 0; y <= 8; y++)
