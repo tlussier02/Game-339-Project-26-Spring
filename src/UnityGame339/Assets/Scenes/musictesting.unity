@@ -119,6 +119,58 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &91610796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 91610798}
+  - component: {fileID: 91610797}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &91610797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91610796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f9bd68bf88e614eae801b890239e1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  musicSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  selectClip: {fileID: 8300000, guid: 97f0990cfef17c54f95df0c68a0b663f, type: 3}
+  failedSelectClip: {fileID: 8300000, guid: e16da65039231e045bc84ad0ad2a3b6e, type: 3}
+  matchClip: {fileID: 8300000, guid: 27296cedc6be0b84d8fe6977766b7baf, type: 3}
+  mainResultClip: {fileID: 8300000, guid: 438baf31177ae5e4da37cca48d5dcce7, type: 3}
+  gameClip: {fileID: 8300000, guid: 013a5100abd2595449f9e9ca73b07ded, type: 3}
+  _controller: {fileID: 0}
+--- !u!4 &91610798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91610796}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1077.4562, y: 477.13837, z: -207.57825}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &245410493
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,11 +230,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridPopulator
   gridStartCell: {x: -4, y: 4, z: 0}
+  gridSize: 9
   Tilemap: {fileID: 825860015}
   TilesToPlace:
   - {fileID: 11400000, guid: 3f3fb190f5da045a790c88ffaffb52d4, type: 2}
   - {fileID: 11400000, guid: a27dc880a0c7745bf870a98bcdbe5c93, type: 2}
   - {fileID: 11400000, guid: 310d87004df9b42b7af2a7f41925c4e5, type: 2}
+  defaultTileColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedTileColor: {r: 1, g: 0.92, b: 0.45, a: 1}
+  minimumMatchCount: 3
+  baseMatchScore: 100
+  extraCropMultiplierStep: 1
+  roundDurationSeconds: 180
+  targetScore: 2500
+  scoreText: {fileID: 0}
+  goalText: {fileID: 0}
+  timerText: {fileID: 0}
+  startButton: {fileID: 0}
+  startButtonLabel: {fileID: 0}
 --- !u!1 &303121141
 GameObject:
   m_ObjectHideFlags: 0
@@ -2154,3 +2219,4 @@ SceneRoots:
   - {fileID: 2140472747}
   - {fileID: 1614392436}
   - {fileID: 245410495}
+  - {fileID: 91610798}

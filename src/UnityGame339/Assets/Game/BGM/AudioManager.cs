@@ -35,6 +35,7 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     { 
+        if (_controller == null || _controller.Model == null) return;
         _controller.Model.MatchResolved += OnMatchResolved;
         _controller.Model.RoundEnded += OnRoundEnded;
         _controller.Model.StateChanged += OnStateChanged;
