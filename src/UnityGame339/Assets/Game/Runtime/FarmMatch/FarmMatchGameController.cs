@@ -27,6 +27,8 @@ namespace Game.Runtime.FarmMatch
         private IFarmMatchBoard _board;
         private FarmMatchGameModel _model;
         private FarmMatchScreenViewModel _viewModel;
+        
+        public FarmMatchGameModel Model => _model;
 
         private void Awake()
         {
