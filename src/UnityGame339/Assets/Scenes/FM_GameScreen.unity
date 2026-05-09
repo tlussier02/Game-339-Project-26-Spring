@@ -186,7 +186,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c4e6149c8d3ff420c9c46c43e7d5ffbf, type: 2}
   - {fileID: 11400000, guid: 0daa1209003cf4f13b5d5097d377d57b, type: 2}
   defaultTileColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedTileColor: {r: 1, g: 0.92, b: 0.45, a: 1}
+  selectedTileColor: {r: 0.63522005, g: 0.55171144, b: 0.03395826, a: 1}
   minimumMatchCount: 3
   baseMatchScore: 100
   extraCropMultiplierStep: 1
