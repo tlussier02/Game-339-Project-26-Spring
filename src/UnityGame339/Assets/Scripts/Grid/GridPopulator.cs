@@ -171,7 +171,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         {
             if (_model.State.SelectionCount >= minimumMatchCount)
             {
-                _model.TryResolveSelection(out _, out _);
+                PlaySubmitSelectionSound();
                 return;
             }
 
@@ -185,6 +185,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
             return;
         }
 
+        AudioManager.Resolve()?.PlayGameBgm();
         _model.StartNewRound();
     }
 
@@ -201,6 +202,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         }
 
         FarmMatchResultsSession.Set(result, restartSceneName);
+        AudioManager.Resolve()?.PlayResultsBgm();
         SceneManager.LoadScene(resultsSceneName);
     }
 
@@ -224,7 +226,8 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
         if (TryGetPointerGridPosition(out var position))
         {
-            _model.TrySelect(position);
+            var selectionResult = _model.TrySelect(position);
+            AudioManager.Resolve()?.Play(selectionResult.Succeeded ? SFXType.Select : SFXType.FailedSelect);
             return;
         }
 
@@ -240,13 +243,24 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
         {
-            _model.TryResolveSelection(out _, out _);
+            PlaySubmitSelectionSound();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             _model.CancelSelection(FarmMatchSelectionClearReason.ClickedOutsideGrid);
         }
+    }
+
+    private void PlaySubmitSelectionSound()
+    {
+        if (_model == null)
+        {
+            return;
+        }
+
+        AudioManager.Resolve()?.Play(
+            _model.TryResolveSelection(out _, out _) ? SFXType.Match : SFXType.FailedSelect);
     }
 
     private bool IsPointerOverStartButton()
