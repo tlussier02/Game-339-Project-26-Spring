@@ -12,6 +12,8 @@ namespace Game.Runtime.FarmMatch
 
         public int HighScore { get; internal set; }
 
+        public int RoundNumber { get; internal set; } = 1;
+
         public float TimeRemainingSeconds { get; internal set; }
 
         public FarmCropType SelectedCropType { get; internal set; } = FarmCropType.None;
@@ -27,6 +29,8 @@ namespace Game.Runtime.FarmMatch
         public int LastAwardedScore { get; internal set; }
 
         public int LastMatchedCropCount { get; internal set; }
+
+        public FarmCropType LastMatchedCropType { get; internal set; } = FarmCropType.None;
 
         public bool HasSelection => SelectionCount > 0;
 
