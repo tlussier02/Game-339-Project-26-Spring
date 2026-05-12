@@ -16,6 +16,8 @@ namespace Game.Runtime.FarmMatch
 
         public int? TargetScore { get; set; }
 
+        public int TargetScoreIncreasePerRound { get; set; } = 500;
+
         public void Validate()
         {
             if (GridSize <= 0)
@@ -46,6 +48,11 @@ namespace Game.Runtime.FarmMatch
             if (TargetScore.HasValue && TargetScore.Value <= 0)
             {
                 throw new InvalidOperationException("TargetScore must be greater than zero when it is set.");
+            }
+
+            if (TargetScoreIncreasePerRound < 0)
+            {
+                throw new InvalidOperationException("TargetScoreIncreasePerRound cannot be negative.");
             }
         }
     }

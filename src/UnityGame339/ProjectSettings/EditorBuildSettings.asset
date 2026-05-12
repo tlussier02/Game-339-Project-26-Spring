@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/FM_GameScreen.unity
+    guid: 04d5079a3453e47f9aa41cbf1cff744c
+  - enabled: 1
+    path: Assets/Scenes/LiTestingScene.unity
+    guid: 670750fc191008d4db7ebeaba6e9e8b8
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

@@ -11,6 +11,7 @@ namespace Game.Runtime.FarmMatch
         private readonly FarmMatchRules _rules;
         private readonly Timer _timer;
         private readonly List<GridPosition> _selection = new List<GridPosition>();
+        private int _savedHighScore;
 
         public FarmMatchGameModel(
             IFarmMatchBoard board,
@@ -27,7 +28,7 @@ namespace Game.Runtime.FarmMatch
             State = new FarmMatchGameState
             {
                 TimeRemainingSeconds = _rules.RoundDurationSeconds,
-                TargetScore = _rules.TargetScore
+                TargetScore = GetTargetScoreForRound(1)
             };
         }
 
@@ -35,11 +36,22 @@ namespace Game.Runtime.FarmMatch
 
         public event Action<FarmMatchResolution> MatchResolved;
 
+        public event Action<FarmMatchRoundProgress> RoundAdvanced;
+
         public event Action<FarmMatchRoundResult> RoundEnded;
+
+        public event Action<int> HighScoreChanged;
 
         public FarmMatchGameState State { get; }
 
         public IReadOnlyList<GridPosition> CurrentSelection => _selection;
+
+        public void SetHighScore(int highScore)
+        {
+            _savedHighScore = Math.Max(0, highScore);
+            State.HighScore = _savedHighScore;
+            RaiseStateChanged();
+        }
 
         public void StartNewRound()
         {
@@ -50,12 +62,15 @@ namespace Game.Runtime.FarmMatch
             State.EndReason = FarmMatchRoundEndReason.None;
             State.CurrentScore = 0;
             State.FinalScore = 0;
+            State.HighScore = _savedHighScore;
+            State.RoundNumber = 1;
             State.TimeRemainingSeconds = _rules.RoundDurationSeconds;
-            State.TargetScore = _rules.TargetScore;
+            State.TargetScore = GetTargetScoreForRound(State.RoundNumber);
             State.LastSelectionFailureReason = FarmMatchSelectionFailureReason.None;
             State.LastSelectionClearReason = FarmMatchSelectionClearReason.RoundRestarted;
             State.LastAwardedScore = 0;
             State.LastMatchedCropCount = 0;
+            State.LastMatchedCropType = FarmCropType.None;
 
             _timer.Start(_rules.RoundDurationSeconds);
             RaiseStateChanged();
@@ -69,11 +84,14 @@ namespace Game.Runtime.FarmMatch
             State.EndReason = FarmMatchRoundEndReason.None;
             State.CurrentScore = 0;
             State.FinalScore = 0;
+            State.RoundNumber = 1;
             State.TimeRemainingSeconds = _rules.RoundDurationSeconds;
+            State.TargetScore = GetTargetScoreForRound(State.RoundNumber);
             State.LastSelectionFailureReason = FarmMatchSelectionFailureReason.None;
             State.LastSelectionClearReason = FarmMatchSelectionClearReason.RoundEnded;
             State.LastAwardedScore = 0;
             State.LastMatchedCropCount = 0;
+            State.LastMatchedCropType = FarmCropType.None;
 
             RaiseStateChanged();
         }
@@ -204,12 +222,13 @@ namespace Game.Runtime.FarmMatch
             State.CurrentScore += awardedScore;
             if (State.CurrentScore > State.HighScore)
             {
-                State.HighScore = State.CurrentScore;
+                UpdateHighScore(State.CurrentScore);
             }
             State.LastSelectionFailureReason = FarmMatchSelectionFailureReason.None;
             State.LastSelectionClearReason = FarmMatchSelectionClearReason.SelectionResolved;
             State.LastAwardedScore = awardedScore;
             State.LastMatchedCropCount = matchedPositions.Length;
+            State.LastMatchedCropType = State.SelectedCropType;
 
             resolution = new FarmMatchResolution(
                 State.SelectedCropType,
@@ -222,7 +241,7 @@ namespace Game.Runtime.FarmMatch
 
             if (State.TargetScore.HasValue && State.CurrentScore >= State.TargetScore.Value)
             {
-                EndRound(FarmMatchRoundEndReason.TargetScoreReached);
+                AdvanceRound();
                 return true;
             }
 
@@ -260,22 +279,61 @@ namespace Game.Runtime.FarmMatch
             State.TimeRemainingSeconds = Math.Max(_timer.Current, 0f);
             if (State.FinalScore > State.HighScore)
             {
-                State.HighScore = State.FinalScore;
+                UpdateHighScore(State.FinalScore);
             }
 
             RoundEnded?.Invoke(new FarmMatchRoundResult(
                 State.EndReason,
                 State.FinalScore,
                 State.HighScore,
+                State.RoundNumber,
                 State.DidWin,
                 State.DidLose));
             RaiseStateChanged();
+        }
+
+        private void AdvanceRound()
+        {
+            State.RoundNumber++;
+            State.TargetScore = GetTargetScoreForRound(State.RoundNumber);
+            State.TimeRemainingSeconds = _rules.RoundDurationSeconds;
+            State.EndReason = FarmMatchRoundEndReason.None;
+            State.LastSelectionFailureReason = FarmMatchSelectionFailureReason.None;
+            State.LastSelectionClearReason = FarmMatchSelectionClearReason.RoundRestarted;
+            State.LastAwardedScore = 0;
+            State.LastMatchedCropCount = 0;
+            State.LastMatchedCropType = FarmCropType.None;
+
+            _board.ResetBoard();
+            ClearSelection(FarmMatchSelectionClearReason.RoundRestarted);
+            _timer.Start(_rules.RoundDurationSeconds);
+
+            RoundAdvanced?.Invoke(new FarmMatchRoundProgress(State.RoundNumber, State.TargetScore));
+            RaiseStateChanged();
+        }
+
+        private int? GetTargetScoreForRound(int roundNumber)
+        {
+            if (!_rules.TargetScore.HasValue)
+            {
+                return null;
+            }
+
+            var completedRounds = Math.Max(0, roundNumber - 1);
+            return _rules.TargetScore.Value + (completedRounds * _rules.TargetScoreIncreasePerRound);
         }
 
         private void HandleFailedSelection(FarmMatchSelectionFailureReason failureReason)
         {
             State.LastSelectionFailureReason = failureReason;
             CancelSelection(FarmMatchSelectionClearReason.InvalidSelection);
+        }
+
+        private void UpdateHighScore(int highScore)
+        {
+            _savedHighScore = highScore;
+            State.HighScore = highScore;
+            HighScoreChanged?.Invoke(highScore);
         }
 
         private void ClearSelection(FarmMatchSelectionClearReason clearReason)

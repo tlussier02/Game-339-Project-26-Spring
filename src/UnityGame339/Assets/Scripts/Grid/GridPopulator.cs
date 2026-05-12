@@ -3,11 +3,14 @@ using Game;
 using Game.Runtime.FarmMatch;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 {
+    private const string HighScorePrefsKey = "FarmMatch.HighScore";
+
     [Header("Board")]
     public Vector3Int gridStartCell = new  Vector3Int(0, 5, 0);
     public int gridSize = 9;
@@ -22,6 +25,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     [SerializeField] private int extraCropMultiplierStep = 1;
     [SerializeField] private float roundDurationSeconds = 180f;
     [SerializeField] private int targetScore = 2500;
+    [SerializeField] private int targetScoreIncreasePerRound = 500;
 
     [Header("HUD")]
     [SerializeField] private TMP_Text scoreText;
@@ -29,10 +33,15 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private Button startButton;
     [SerializeField] private TMP_Text startButtonLabel;
+    [SerializeField] private FarmMatchGameOverPanel resultsPanel;
+    [SerializeField] private bool loadResultsSceneOnRoundEnd;
+    [SerializeField] private string resultsSceneName = "LiTestingScene";
+    [SerializeField] private string restartSceneName = "FM_GameScreen";
 
     private readonly Dictionary<TileBase, FarmCropType> _tileToCropType = new Dictionary<TileBase, FarmCropType>();
     private readonly HashSet<GridPosition> _highlightedPositions = new HashSet<GridPosition>();
     private FarmMatchGameModel _model;
+    private FarmMatchScreenViewModel _viewModel;
     private Camera _inputCamera;
 
     private void Awake()
@@ -47,16 +56,26 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
             BaseMatchScore = baseMatchScore,
             ExtraCropMultiplierStep = extraCropMultiplierStep,
             RoundDurationSeconds = roundDurationSeconds,
-            TargetScore = targetScore > 0 ? (int?)targetScore : null
+            TargetScore = targetScore > 0 ? (int?)targetScore : null,
+            TargetScoreIncreasePerRound = targetScoreIncreasePerRound
         };
 
         _model = new FarmMatchGameModel(this, new UnityTimeProvider(), new FarmMatchScoreService(), rules);
-        _model.StateChanged += Render;
+        _model.SetHighScore(PlayerPrefs.GetInt(HighScorePrefsKey, 0));
+        _model.HighScoreChanged += SaveHighScore;
+        _viewModel = new FarmMatchScreenViewModel(_model);
+        _viewModel.ViewChanged += Render;
+        _viewModel.RoundEnded += HandleRoundEnded;
 
         if (startButton != null)
         {
             startButton.onClick.RemoveListener(HandlePrimaryButtonClick);
             startButton.onClick.AddListener(HandlePrimaryButtonClick);
+        }
+
+        if (resultsPanel != null)
+        {
+            resultsPanel.SetRestartCallback(RestartRound);
         }
 
         ResetBoard();
@@ -67,7 +86,10 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     {
         if (_model != null)
         {
-            _model.StateChanged -= Render;
+            _model.HighScoreChanged -= SaveHighScore;
+            _viewModel.ViewChanged -= Render;
+            _viewModel.RoundEnded -= HandleRoundEnded;
+            _viewModel.Dispose();
         }
 
         if (startButton != null)
@@ -165,6 +187,29 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
         _model.StartNewRound();
     }
+
+    private void RestartRound()
+    {
+        _model?.StartNewRound();
+    }
+
+    private void HandleRoundEnded(FarmMatchRoundResult result)
+    {
+        if (!loadResultsSceneOnRoundEnd || string.IsNullOrWhiteSpace(resultsSceneName))
+        {
+            return;
+        }
+
+        FarmMatchResultsSession.Set(result, restartSceneName);
+        SceneManager.LoadScene(resultsSceneName);
+    }
+
+    private static void SaveHighScore(int highScore)
+    {
+        PlayerPrefs.SetInt(HighScorePrefsKey, highScore);
+        PlayerPrefs.Save();
+    }
+
     private void HandlePointerInput()
     {
         if (_model.State.RoundState != FarmMatchRoundState.Playing || !Input.GetMouseButtonDown(0))
@@ -415,42 +460,43 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
             startButtonLabel = startButton.GetComponentInChildren<TMP_Text>(true);
         }
 
+        if (resultsPanel == null)
+        {
+            resultsPanel = FindFirstObjectByType<FarmMatchGameOverPanel>(FindObjectsInactive.Include);
+        }
+
         _inputCamera = Camera.main;
         if (_inputCamera == null)
         {
-            _inputCamera = FindObjectOfType<Camera>();
+            _inputCamera = FindFirstObjectByType<Camera>();
         }
     }
 
     private void Render()
     {
-        if (_model == null)
+        if (_model == null || _viewModel == null)
         {
             return;
         }
 
         UpdateSelectionHighlight();
-        SetText(scoreText, "SCORE: " + _model.State.CurrentScore.ToString("0000"));
-        SetText(timerText, "TIME: " + Mathf.CeilToInt(Mathf.Max(0f, _model.State.TimeRemainingSeconds)).ToString("000"));
+        SetText(scoreText, _viewModel.ScoreHudLabel);
+        SetText(timerText, _viewModel.TimerHudLabel);
+        SetText(goalText, _viewModel.GoalHudLabel);
 
-        if (_model.State.RoundState == FarmMatchRoundState.Results)
+        if (resultsPanel != null)
         {
-            SetText(goalText, "FINAL: " + _model.State.FinalScore.ToString("0000"));
-            SetText(startButtonLabel, "RESTART");
-            SetButtonInteractable(true);
+            resultsPanel.Render(_viewModel);
+        }
+
+        if (_viewModel.RoundState == FarmMatchRoundState.Results)
+        {
+            SetText(startButtonLabel, "RESULTS");
+            SetButtonInteractable(resultsPanel == null);
             return;
         }
 
-        if (_model.State.TargetScore.HasValue)
-        {
-            SetText(goalText, "GOAL: " + _model.State.TargetScore.Value.ToString("0000"));
-        }
-        else
-        {
-            SetText(goalText, "HIGH: " + _model.State.HighScore.ToString("0000"));
-        }
-
-        if (_model.State.RoundState == FarmMatchRoundState.Title)
+        if (_viewModel.RoundState == FarmMatchRoundState.Title)
         {
             SetText(startButtonLabel, "START");
             SetButtonInteractable(true);

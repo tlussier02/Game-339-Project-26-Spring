@@ -29,6 +29,19 @@ namespace Game.Runtime.FarmMatch
         StoppedEarly
     }
 
+    public sealed class FarmMatchRoundProgress
+    {
+        public FarmMatchRoundProgress(int roundNumber, int? targetScore)
+        {
+            RoundNumber = roundNumber;
+            TargetScore = targetScore;
+        }
+
+        public int RoundNumber { get; }
+
+        public int? TargetScore { get; }
+    }
+
     public enum FarmMatchSelectionFailureReason
     {
         None,
@@ -159,12 +172,14 @@ namespace Game.Runtime.FarmMatch
             FarmMatchRoundEndReason endReason,
             int finalScore,
             int highScore,
+            int roundNumber,
             bool didWin,
             bool didLose)
         {
             EndReason = endReason;
             FinalScore = finalScore;
             HighScore = highScore;
+            RoundNumber = roundNumber;
             DidWin = didWin;
             DidLose = didLose;
         }
@@ -175,8 +190,31 @@ namespace Game.Runtime.FarmMatch
 
         public int HighScore { get; }
 
+        public int RoundNumber { get; }
+
         public bool DidWin { get; }
 
         public bool DidLose { get; }
+    }
+
+    public static class FarmMatchResultsSession
+    {
+        public static FarmMatchRoundResult LastResult { get; private set; }
+
+        public static string RestartSceneName { get; private set; }
+
+        public static bool HasResult => LastResult != null;
+
+        public static void Set(FarmMatchRoundResult result, string restartSceneName)
+        {
+            LastResult = result;
+            RestartSceneName = restartSceneName;
+        }
+
+        public static void Clear()
+        {
+            LastResult = null;
+            RestartSceneName = null;
+        }
     }
 }

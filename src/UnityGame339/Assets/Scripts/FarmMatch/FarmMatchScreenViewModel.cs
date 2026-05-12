@@ -9,7 +9,19 @@ namespace Game.Runtime.FarmMatch
         public FarmMatchScreenViewModel(FarmMatchGameModel model)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
+            _model.StateChanged += HandleStateChanged;
+            _model.MatchResolved += HandleMatchResolved;
+            _model.RoundAdvanced += HandleRoundAdvanced;
+            _model.RoundEnded += HandleRoundEnded;
         }
+
+        public event Action ViewChanged;
+
+        public event Action<FarmMatchResolution> MatchResolved;
+
+        public event Action<FarmMatchRoundProgress> RoundAdvanced;
+
+        public event Action<FarmMatchRoundResult> RoundEnded;
 
         public FarmMatchRoundState RoundState => _model.State.RoundState;
 
@@ -25,9 +37,33 @@ namespace Game.Runtime.FarmMatch
 
         public string ScoreLabel => "Score: " + _model.State.CurrentScore;
 
+        public string ScoreHudLabel => "SCORE: " + _model.State.CurrentScore.ToString("0000");
+
         public string HighScoreLabel => "High Score: " + _model.State.HighScore;
 
+        public string RoundLabel => "Round: " + _model.State.RoundNumber;
+
         public string TimerLabel => "Time: " + Math.Max(0, (int)Math.Ceiling(_model.State.TimeRemainingSeconds));
+
+        public string TimerHudLabel => "TIME: " + Math.Max(0, (int)Math.Ceiling(_model.State.TimeRemainingSeconds)).ToString("000");
+
+        public string GoalHudLabel
+        {
+            get
+            {
+                if (_model.State.RoundState == FarmMatchRoundState.Results)
+                {
+                    return "FINAL: " + _model.State.FinalScore.ToString("0000");
+                }
+
+                if (_model.State.TargetScore.HasValue)
+                {
+                    return "GOAL: " + _model.State.TargetScore.Value.ToString("0000");
+                }
+
+                return "HIGH: " + _model.State.HighScore.ToString("0000");
+            }
+        }
 
         public string SelectionCountLabel => "Selected: " + _model.State.SelectionCount;
 
@@ -35,11 +71,6 @@ namespace Game.Runtime.FarmMatch
         {
             get
             {
-                if (_model.State.DidWin)
-                {
-                    return "You Win";
-                }
-
                 if (_model.State.DidLose)
                 {
                     return "Game Over";
@@ -53,6 +84,8 @@ namespace Game.Runtime.FarmMatch
 
         public string GameOverHighScoreLabel => "High Score: " + _model.State.HighScore;
 
+        public string GameOverRoundLabel => "Rounds Cleared: " + Math.Max(0, _model.State.RoundNumber - 1);
+
         public string RestartButtonLabel => "Restart";
 
         public string StatusLabel
@@ -61,15 +94,10 @@ namespace Game.Runtime.FarmMatch
             {
                 if (_model.State.ShowGameOverPanel)
                 {
-                    if (_model.State.DidWin)
-                    {
-                        return "Target score reached before time expired.";
-                    }
-
                     if (_model.State.DidLose)
                     {
                         return _model.State.HasWinCondition
-                            ? "Time ran out before the target score was reached."
+                            ? "Time ran out before the round goal was reached."
                             : "Time ran out.";
                     }
 
@@ -95,12 +123,24 @@ namespace Game.Runtime.FarmMatch
 
                 if (_model.State.LastAwardedScore > 0 && _model.State.LastMatchedCropCount > 0)
                 {
-                    return "+" + _model.State.LastAwardedScore + " points for matching " + _model.State.LastMatchedCropCount + ".";
+                    return "+" + _model.State.LastAwardedScore
+                        + " points for matching "
+                        + _model.State.LastMatchedCropCount
+                        + " "
+                        + FormatCropName(_model.State.LastMatchedCropType)
+                        + ".";
                 }
 
                 if (_model.State.LastSelectionClearReason == FarmMatchSelectionClearReason.ClickedOutsideGrid)
                 {
                     return "Selection canceled.";
+                }
+
+                if (_model.State.LastSelectionClearReason == FarmMatchSelectionClearReason.RoundRestarted
+                    && _model.State.RoundState == FarmMatchRoundState.Playing
+                    && _model.State.RoundNumber > 1)
+                {
+                    return GoalHudLabel + " for " + RoundLabel + ".";
                 }
 
                 if (_model.State.SelectionCount > 0)
@@ -110,6 +150,39 @@ namespace Game.Runtime.FarmMatch
 
                 return "Build a chain of 3 or more matching neighboring crops.";
             }
+        }
+
+        public void Dispose()
+        {
+            _model.StateChanged -= HandleStateChanged;
+            _model.MatchResolved -= HandleMatchResolved;
+            _model.RoundAdvanced -= HandleRoundAdvanced;
+            _model.RoundEnded -= HandleRoundEnded;
+        }
+
+        private void HandleStateChanged()
+        {
+            ViewChanged?.Invoke();
+        }
+
+        private void HandleMatchResolved(FarmMatchResolution resolution)
+        {
+            MatchResolved?.Invoke(resolution);
+        }
+
+        private void HandleRoundAdvanced(FarmMatchRoundProgress progress)
+        {
+            RoundAdvanced?.Invoke(progress);
+        }
+
+        private void HandleRoundEnded(FarmMatchRoundResult result)
+        {
+            RoundEnded?.Invoke(result);
+        }
+
+        private static string FormatCropName(FarmCropType cropType)
+        {
+            return cropType == FarmCropType.None ? "crops" : cropType.ToString().ToLowerInvariant() + "s";
         }
     }
 }

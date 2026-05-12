@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 1580847087137426959}
   - component: {fileID: 3783712091609936514}
   - component: {fileID: 2865723928156935099}
+  - component: {fileID: 919191919191919191}
   m_Layer: 5
   m_Name: ResultsPanel
   m_TagString: Untagged
@@ -352,6 +353,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &919191919191919191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905005323032222361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f827763e342d2488d9f6b8518adff47a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelRoot: {fileID: 1905005323032222361}
+  headerLabel: {fileID: 0}
+  currentScoreLabel: {fileID: 7081294472362943154}
+  highScoreLabel: {fileID: 7688691166636633177}
+  statusLabel: {fileID: 0}
+  restartButton: {fileID: 1660092292934642109}
+  restartButtonLabel: {fileID: 8647452892462700287}
 --- !u!1 &2131377300395514830
 GameObject:
   m_ObjectHideFlags: 0

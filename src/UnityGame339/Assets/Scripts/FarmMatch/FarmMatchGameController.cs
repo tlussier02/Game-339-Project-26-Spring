@@ -5,6 +5,8 @@ namespace Game.Runtime.FarmMatch
 {
     public sealed class FarmMatchGameController : MonoBehaviour
     {
+        private const string HighScorePrefsKey = "FarmMatch.HighScore";
+
         [Header("Rules")]
         [SerializeField] private int gridSize = 9;
         [SerializeField] private int minimumMatchCount = 3;
@@ -12,6 +14,7 @@ namespace Game.Runtime.FarmMatch
         [SerializeField] private int extraCropMultiplierStep = 1;
         [SerializeField] private float roundDurationSeconds = 180f;
         [SerializeField] private int targetScore = 2500;
+        [SerializeField] private int targetScoreIncreasePerRound = 500;
 
         [Header("Dependencies")]
         [SerializeField] private MonoBehaviour boardProvider;
@@ -45,12 +48,15 @@ namespace Game.Runtime.FarmMatch
                 BaseMatchScore = baseMatchScore,
                 ExtraCropMultiplierStep = extraCropMultiplierStep,
                 RoundDurationSeconds = roundDurationSeconds,
-                TargetScore = targetScore > 0 ? (int?)targetScore : null
+                TargetScore = targetScore > 0 ? (int?)targetScore : null,
+                TargetScoreIncreasePerRound = targetScoreIncreasePerRound
             };
 
             _model = new FarmMatchGameModel(_board, new UnityTimeProvider(), new FarmMatchScoreService(), rules);
+            _model.SetHighScore(PlayerPrefs.GetInt(HighScorePrefsKey, 0));
+            _model.HighScoreChanged += SaveHighScore;
             _viewModel = new FarmMatchScreenViewModel(_model);
-            _model.StateChanged += Render;
+            _viewModel.ViewChanged += Render;
 
             if (gameOverPanel != null)
             {
@@ -64,7 +70,9 @@ namespace Game.Runtime.FarmMatch
         {
             if (_model != null)
             {
-                _model.StateChanged -= Render;
+                _model.HighScoreChanged -= SaveHighScore;
+                _viewModel.ViewChanged -= Render;
+                _viewModel.Dispose();
             }
         }
 
@@ -136,6 +144,12 @@ namespace Game.Runtime.FarmMatch
             {
                 label.text = value;
             }
+        }
+
+        private static void SaveHighScore(int highScore)
+        {
+            PlayerPrefs.SetInt(HighScorePrefsKey, highScore);
+            PlayerPrefs.Save();
         }
     }
 }
