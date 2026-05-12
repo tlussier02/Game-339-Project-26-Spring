@@ -140,6 +140,72 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Wooden_Panel_Large
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 384
+        width: 90
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24cb7ad7b01314050ae7aa2171e376d4
+      internalID: 1811484302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden_Panel_Medium
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 32
+        width: 92
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07742eb549a334143a94d69eec91b4d1
+      internalID: -1303447227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wooden_Panel_Small
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 32
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abd20a09cafa742c0bf7abcd088ccd6e
+      internalID: 1632766718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -156,6 +222,9 @@ TextureImporter:
     nameFileIdTable:
       Wooden_BlankButton_Down: -1517023491
       Wooden_BlankButton_Up: 496319908
+      Wooden_Panel_Large: 1811484302
+      Wooden_Panel_Medium: -1303447227
+      Wooden_Panel_Small: 1632766718
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
