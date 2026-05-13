@@ -238,6 +238,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     
     private void HandleRoundAdvanced(FarmMatchRoundProgress progress)
     {
+        _animator?.StopAllCropAnimations();
         _animator?.PlayGoalIncreasedAnimation();
     }
 
@@ -625,11 +626,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
     private void SetTileColor(Vector3Int cellPosition, Color color)
     {
-        if (Tilemap == null)
-        {
-            return;
-        }
-
+        if (Tilemap == null) return;
         Tilemap.SetTileFlags(cellPosition, TileFlags.None);
         Tilemap.SetColor(cellPosition, color);
     }
