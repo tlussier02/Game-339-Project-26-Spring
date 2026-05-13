@@ -6,12 +6,10 @@ namespace Game.Runtime.FarmMatch
     public enum FarmCropType
     {
         None = 0,
-        Apple = 1,
-        Grape = 2,
-        Cherry = 3,
-        Kiwi = 4,
-        Orange = 5,
-        Watermelon = 6
+        Corn = 1,
+        Potato = 2,
+        Wheat = 3,
+        Strawberry = 4,
     }
 
     public enum FarmMatchRoundState

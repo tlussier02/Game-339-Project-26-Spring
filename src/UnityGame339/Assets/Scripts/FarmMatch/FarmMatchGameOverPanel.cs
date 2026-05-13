@@ -135,10 +135,10 @@ namespace Game.Runtime.FarmMatch
             }
 
             SetText(headerLabel, result.DidLose ? "Game Over" : "Round Complete");
-            SetText(currentScoreLabel, "Current Score: " + result.FinalScore);
-            SetText(highScoreLabel, "High Score: " + result.HighScore);
+            SetText(currentScoreLabel, "CURRENT SCORE: " + result.FinalScore);
+            SetText(highScoreLabel, "HIGHSCORE: " + result.HighScore);
             SetText(statusLabel, "Rounds Cleared: " + Mathf.Max(0, result.RoundNumber - 1));
-            SetText(restartButtonLabel, "Restart");
+            SetText(restartButtonLabel, "RESTART");
 
             if (restartButton != null)
             {
