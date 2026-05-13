@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Game;
 using Game.Runtime.FarmMatch;
@@ -18,6 +19,12 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     public List<TileBase> TilesToPlace;
     [SerializeField] private Color defaultTileColor = Color.white;
     [SerializeField] private Color selectedTileColor = new Color(1f, 0.92f, 0.45f, 1f);
+
+    [Header("Score Popup")]
+    [SerializeField] private Color scorePopupColor = new Color(1f, 0.92f, 0.2f, 1f);
+    [SerializeField] private float scorePopupFontSize = 3f;
+    [SerializeField] private float scorePopupRiseDistance = 0.9f;
+    [SerializeField] private float scorePopupDurationSeconds = 0.8f;
 
     [Header("Rules")]
     [SerializeField] private int minimumMatchCount = 3;
@@ -65,6 +72,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         _model.HighScoreChanged += SaveHighScore;
         _viewModel = new FarmMatchScreenViewModel(_model);
         _viewModel.ViewChanged += Render;
+        _viewModel.MatchResolved += HandleMatchResolved;
         _viewModel.RoundEnded += HandleRoundEnded;
 
         if (startButton != null)
@@ -88,6 +96,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         {
             _model.HighScoreChanged -= SaveHighScore;
             _viewModel.ViewChanged -= Render;
+            _viewModel.MatchResolved -= HandleMatchResolved;
             _viewModel.RoundEnded -= HandleRoundEnded;
             _viewModel.Dispose();
         }
@@ -171,7 +180,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         {
             if (_model.State.SelectionCount >= minimumMatchCount)
             {
-                _model.TryResolveSelection(out _, out _);
+                PlaySubmitSelectionSound();
                 return;
             }
 
@@ -185,12 +194,18 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
             return;
         }
 
+        AudioManager.Resolve()?.PlayGameBgm();
         _model.StartNewRound();
     }
 
     private void RestartRound()
     {
         _model?.StartNewRound();
+    }
+
+    private void HandleMatchResolved(FarmMatchResolution resolution)
+    {
+        ShowScorePopup(resolution);
     }
 
     private void HandleRoundEnded(FarmMatchRoundResult result)
@@ -201,6 +216,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         }
 
         FarmMatchResultsSession.Set(result, restartSceneName);
+        AudioManager.Resolve()?.PlayResultsBgm();
         SceneManager.LoadScene(resultsSceneName);
     }
 
@@ -224,7 +240,8 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
         if (TryGetPointerGridPosition(out var position))
         {
-            _model.TrySelect(position);
+            var selectionResult = _model.TrySelect(position);
+            AudioManager.Resolve()?.Play(selectionResult.Succeeded ? SFXType.Select : SFXType.FailedSelect);
             return;
         }
 
@@ -240,13 +257,24 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
         {
-            _model.TryResolveSelection(out _, out _);
+            PlaySubmitSelectionSound();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             _model.CancelSelection(FarmMatchSelectionClearReason.ClickedOutsideGrid);
         }
+    }
+
+    private void PlaySubmitSelectionSound()
+    {
+        if (_model == null)
+        {
+            return;
+        }
+
+        AudioManager.Resolve()?.Play(
+            _model.TryResolveSelection(out _, out _) ? SFXType.Match : SFXType.FailedSelect);
     }
 
     private bool IsPointerOverStartButton()
@@ -567,6 +595,64 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
         Tilemap.SetTileFlags(cellPosition, TileFlags.None);
         Tilemap.SetColor(cellPosition, color);
+    }
+
+    private void ShowScorePopup(FarmMatchResolution resolution)
+    {
+        if (resolution == null
+            || resolution.AwardedScore <= 0
+            || resolution.MatchedPositions == null
+            || resolution.MatchedPositions.Count == 0
+            || Tilemap == null)
+        {
+            return;
+        }
+
+        var popupPosition = Vector3.zero;
+        for (var i = 0; i < resolution.MatchedPositions.Count; i++)
+        {
+            popupPosition += Tilemap.GetCellCenterWorld(GetCellPosition(resolution.MatchedPositions[i]));
+        }
+
+        popupPosition /= resolution.MatchedPositions.Count;
+        popupPosition.z = Tilemap.transform.position.z - 0.1f;
+
+        var popupObject = new GameObject("Score Popup");
+        popupObject.transform.position = popupPosition;
+
+        var popupText = popupObject.AddComponent<TextMeshPro>();
+        popupText.text = "+" + resolution.AwardedScore;
+        popupText.alignment = TextAlignmentOptions.Center;
+        popupText.fontSize = scorePopupFontSize;
+        popupText.color = scorePopupColor;
+        popupText.sortingOrder = 100;
+
+        StartCoroutine(AnimateScorePopup(popupObject.transform, popupText));
+    }
+
+    private IEnumerator AnimateScorePopup(Transform popupTransform, TMP_Text popupText)
+    {
+        if (popupTransform == null || popupText == null)
+        {
+            yield break;
+        }
+
+        var startPosition = popupTransform.position;
+        var endPosition = startPosition + new Vector3(0f, scorePopupRiseDistance, 0f);
+        var duration = Mathf.Max(0.01f, scorePopupDurationSeconds);
+        var elapsed = 0f;
+        var startColor = popupText.color;
+
+        while (elapsed < duration)
+        {
+            var progress = elapsed / duration;
+            popupTransform.position = Vector3.Lerp(startPosition, endPosition, progress);
+            popupText.color = new Color(startColor.r, startColor.g, startColor.b, 1f - progress);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(popupTransform.gameObject);
     }
 
     private static TMP_Text FindText(string objectName)

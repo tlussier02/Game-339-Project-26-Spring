@@ -6,9 +6,12 @@ public class StartScreen : MonoBehaviour
 
     public void HideStartScreen()
     {
+        Debug.Log("StartScreen button clicked. Starting FarmMatch BGM.");
+        AudioManager.Resolve()?.PlayGameBgm();
+
         if (startScreen != null)
-            {
-                startScreen.SetActive(false);
-            }
+        {
+            startScreen.SetActive(false);
+        }
     }
 }
