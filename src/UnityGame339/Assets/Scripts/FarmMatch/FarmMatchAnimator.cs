@@ -9,9 +9,7 @@ public class FarmMatchAnimator : MonoBehaviour
     private TMP_Text _scoreText;
     private TMP_Text _goalText;
     private TMP_Text _timerText;
-    
     private Tilemap _tilemap;
-    
     private readonly HashSet<Vector3Int> _animatingCells = new HashSet<Vector3Int>();
 
     private void Awake()
@@ -38,14 +36,15 @@ public class FarmMatchAnimator : MonoBehaviour
             var target = GameObject.Find("Time - Text");
             _timerText = target != null ? target.GetComponent<TMP_Text>() : null;
         }
-        
+
         if (_tilemap == null)
             _tilemap = FindFirstObjectByType<Tilemap>();
     }
 
     public void PlayScoreIncreasedAnimation() => PlayTextPunchAnimation(_scoreText);
-    public void PlayGoalIncreasedAnimation()  => PlayTextPunchAnimation(_goalText);
-    
+    public void PlayGoalIncreasedAnimation() => PlayTextPunchAnimation(_goalText);
+    public void PlayTimerAnimation() => PlayTextPunchAnimation(_timerText);
+
     public void PlayCropsReplacedAnimation(IReadOnlyList<(Vector3 worldPos, Sprite oldSprite)> animData)
     {
         foreach (var (worldPosition, oldSprite) in animData)
@@ -63,25 +62,59 @@ public class FarmMatchAnimator : MonoBehaviour
             tempObject.AddComponent<SpriteRenderer>().sprite = oldSprite;
             tempObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
-            // new sprite
-            var newTempObject = new GameObject("CropAnimSpawn");
-            newTempObject.transform.position = worldPosition;
-            newTempObject.transform.localScale = Vector3.zero;
-            newTempObject.AddComponent<SpriteRenderer>().sprite = newTile.sprite;
-            newTempObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
-
             DOTween.Sequence()
                 .SetId("cropAnim")
                 .Append(tempObject.transform.DOScale(0f, 0.4f).SetEase(Ease.InBack))
                 .AppendCallback(() => Destroy(tempObject))
-                .Append(newTempObject.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack))
-                .AppendCallback(() =>
-                {
-                    Destroy(newTempObject);
-                    _tilemap.SetTile(cellPosition, newTile);
-                    _animatingCells.Remove(cellPosition);
-                });
+                .AppendCallback(() => PlayGrowIn(worldPosition, newTile));
         }
+    }
+
+    public void PlayBoardResetAnimation(IReadOnlyList<Vector3> worldPositions)
+    {
+        foreach (var worldPosition in worldPositions)
+        {
+            var tile = _tilemap.GetTile<Tile>(_tilemap.WorldToCell(worldPosition));
+            if (tile == null) continue;
+            PlayGrowIn(worldPosition, tile);
+        }
+    }
+
+    public void StopAllCropAnimations()
+    {
+        DOTween.Kill("cropAnim");
+
+        foreach (var obj in GameObject.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            if (obj.name == "CropAnim" || obj.name == "CropAnimSpawn")
+                Destroy(obj);
+        }
+
+        _animatingCells.Clear();
+    }
+
+    private void PlayGrowIn(Vector3 worldPosition, Tile tile)
+    {
+        if (tile == null) return;
+
+        var cellPosition = _tilemap.WorldToCell(worldPosition);
+        _tilemap.SetTile(cellPosition, null);
+
+        var tempObject = new GameObject("CropAnimSpawn");
+        tempObject.transform.position = worldPosition;
+        tempObject.transform.localScale = Vector3.zero;
+        tempObject.AddComponent<SpriteRenderer>().sprite = tile.sprite;
+        tempObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+        DOTween.Sequence()
+            .SetId("cropAnim")
+            .Append(tempObject.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack))
+            .AppendCallback(() =>
+            {
+                _tilemap.SetTile(cellPosition, tile);
+                Destroy(tempObject);
+                _animatingCells.Remove(cellPosition);
+            });
     }
 
     private void PlayTextPunchAnimation(TMP_Text text)
@@ -94,18 +127,5 @@ public class FarmMatchAnimator : MonoBehaviour
             vibrato: 1,
             elasticity: 0.5f
         );
-    }
-    
-    public void StopAllCropAnimations()
-    {
-        DOTween.Kill("cropAnim"); // ← only kills crop sequences!
-
-        foreach (var obj in GameObject.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
-        {
-            if (obj.name == "CropAnim" || obj.name == "CropAnimSpawn")
-                Destroy(obj);
-        }
-
-        _animatingCells.Clear();
     }
 }

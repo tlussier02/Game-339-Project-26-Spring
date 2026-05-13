@@ -240,6 +240,13 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     {
         _animator?.StopAllCropAnimations();
         _animator?.PlayGoalIncreasedAnimation();
+
+        var worldPositions = new List<Vector3>();
+        for (var row = 0; row < gridSize; row++)
+        for (var col = 0; col < gridSize; col++)
+            worldPositions.Add(Tilemap.GetCellCenterWorld(GetCellPosition(new GridPosition(row, col))));
+
+        _animator?.PlayBoardResetAnimation(worldPositions);
     }
 
     private void HandleRoundEnded(FarmMatchRoundResult result)
