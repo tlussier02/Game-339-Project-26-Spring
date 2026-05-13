@@ -35,15 +35,15 @@ namespace Game.Runtime.FarmMatch
 
         public bool CanRestart => RoundState == FarmMatchRoundState.Results;
 
-        public string ScoreLabel => "Score: " + _model.State.CurrentScore;
+        public string ScoreLabel => "SCORE: " + _model.State.CurrentScore;
 
         public string ScoreHudLabel => "SCORE: " + _model.State.CurrentScore.ToString("0000");
 
-        public string HighScoreLabel => "High Score: " + _model.State.HighScore;
+        public string HighScoreLabel => "HIGHSCORE: " + _model.State.HighScore;
 
-        public string RoundLabel => "Round: " + _model.State.RoundNumber;
+        public string RoundLabel => "ROUND: " + _model.State.RoundNumber;
 
-        public string TimerLabel => "Time: " + Math.Max(0, (int)Math.Ceiling(_model.State.TimeRemainingSeconds));
+        public string TimerLabel => "TIME: " + Math.Max(0, (int)Math.Ceiling(_model.State.TimeRemainingSeconds));
 
         public string TimerHudLabel => "TIME: " + Math.Max(0, (int)Math.Ceiling(_model.State.TimeRemainingSeconds)).ToString("000");
 
@@ -80,13 +80,13 @@ namespace Game.Runtime.FarmMatch
             }
         }
 
-        public string GameOverCurrentScoreLabel => "Current Score: " + _model.State.FinalScore;
+        public string GameOverCurrentScoreLabel => "CURRENT SCORE: " + _model.State.FinalScore;
 
-        public string GameOverHighScoreLabel => "High Score: " + _model.State.HighScore;
+        public string GameOverHighScoreLabel => "HIGHSCORE: " + _model.State.HighScore;
 
         public string GameOverRoundLabel => "Rounds Cleared: " + Math.Max(0, _model.State.RoundNumber - 1);
 
-        public string RestartButtonLabel => "Restart";
+        public string RestartButtonLabel => "RESTART";
 
         public string StatusLabel
         {

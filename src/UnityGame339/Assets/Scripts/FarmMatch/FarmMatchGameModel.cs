@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Game339.Shared.Services;
+using UnityEngine;
 
 namespace Game.Runtime.FarmMatch
 {
@@ -314,13 +316,27 @@ namespace Game.Runtime.FarmMatch
 
         private int? GetTargetScoreForRound(int roundNumber)
         {
+            
+            
             if (!_rules.TargetScore.HasValue)
             {
                 return null;
             }
 
             var completedRounds = Math.Max(0, roundNumber - 1);
-            return _rules.TargetScore.Value + (completedRounds * _rules.TargetScoreIncreasePerRound);
+            MonoBehaviour.print("GetTargetScoreForRound: " + completedRounds);
+            int? baseAmount = _rules.TargetScore.Value;
+            
+            if (State != null)
+            {
+                MonoBehaviour.print("State.TargetScore: " + State.TargetScore);
+                baseAmount = State.TargetScore;
+            }
+
+            int? result = baseAmount + (completedRounds * _rules.TargetScoreIncreasePerRound);
+            MonoBehaviour.print("result: " + result);
+            
+            return result;
         }
 
         private void HandleFailedSelection(FarmMatchSelectionFailureReason failureReason)

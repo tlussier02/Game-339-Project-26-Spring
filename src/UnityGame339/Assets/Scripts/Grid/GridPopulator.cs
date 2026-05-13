@@ -450,51 +450,38 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         if (tile != null)
         {
             var tileName = tile.name.ToLowerInvariant();
-            if (tileName.Contains("apple"))
+            if (tileName.Contains("corn"))
             {
-                return FarmCropType.Apple;
+                return FarmCropType.Corn;
             }
 
-            if (tileName.Contains("grape"))
+            if (tileName.Contains("potato"))
             {
-                return FarmCropType.Grape;
+                return FarmCropType.Potato;
             }
 
-            if (tileName.Contains("cherry"))
+            if (tileName.Contains("wheat"))
             {
-                return FarmCropType.Cherry;
+                return FarmCropType.Wheat;
             }
 
-            if (tileName.Contains("kiwi"))
+            if (tileName.Contains("strawberry"))
             {
-                return FarmCropType.Kiwi;
+                return FarmCropType.Strawberry;
             }
-
-            if (tileName.Contains("orange"))
-            {
-                return FarmCropType.Orange;
-            }
-
-            if (tileName.Contains("watermelon"))
-            {
-                return FarmCropType.Watermelon;
-            }
+            
         }
 
         switch (fallbackIndex % 6)
         {
             case 0:
-                return FarmCropType.Apple;
+                return FarmCropType.Corn;
             case 1:
-                return FarmCropType.Grape;
+                return FarmCropType.Potato;
             case 2:
-                return FarmCropType.Cherry;
-            case 3:
-                return FarmCropType.Kiwi;
-            case 4:
-                return FarmCropType.Orange;
+                return FarmCropType.Wheat;
             default:
-                return FarmCropType.Watermelon;
+                return FarmCropType.Strawberry;
         }
     }
 
@@ -571,14 +558,14 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
         if (_viewModel.RoundState == FarmMatchRoundState.Title)
         {
-            SetText(startButtonLabel, "START");
+            SetText(startButtonLabel, "BEGIN");
             SetButtonInteractable(true);
             return;
         }
 
         if (_model.State.SelectionCount >= minimumMatchCount)
         {
-            SetText(startButtonLabel, "SUBMIT");
+            SetText(startButtonLabel, "HARVEST");
             SetButtonInteractable(true);
             return;
         }
