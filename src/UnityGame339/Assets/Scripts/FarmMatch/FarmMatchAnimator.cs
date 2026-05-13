@@ -44,26 +44,51 @@ public class FarmMatchAnimator : MonoBehaviour
     public void PlayScoreIncreasedAnimation() => PlayTextPunchAnimation(_scoreText);
     public void PlayGoalIncreasedAnimation()  => PlayTextPunchAnimation(_goalText);
     
-    public void PlayCropsReplacedAnimation(IReadOnlyList<Vector3> worldPositions)
+    public void PlayCropsReplacedAnimation(IReadOnlyList<(Vector3 worldPos, Sprite oldSprite)> animData)
     {
-        foreach (var worldPosition in worldPositions)
+        foreach (var (worldPosition, oldSprite) in animData)
         {
-            var cellPosition = _tilemap.WorldToCell(worldPosition);
-            var tile = _tilemap.GetTile<Tile>(cellPosition);
+            if (oldSprite == null) continue;
 
-            if (tile == null) continue;
+            var cellPosition = _tilemap.WorldToCell(worldPosition);
+
+            _tilemap.SetTileFlags(cellPosition, TileFlags.None);
+            _tilemap.SetColor(cellPosition, Color.clear);
 
             var tempObject = new GameObject("CropAnim");
             tempObject.transform.position = worldPosition;
             var spriteRenderer = tempObject.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = tile.sprite;
+            spriteRenderer.sprite = oldSprite; // ← old sprite shrinks out!
             spriteRenderer.sortingOrder = 1;
 
             DOTween.Kill(tempObject.transform);
 
-            tempObject.transform.DOScale(0f, 0.2f)
+            tempObject.transform.DOScale(0f, 0.4f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => Destroy(tempObject));
+                .OnComplete(() =>
+                {
+                    _tilemap.SetTileFlags(cellPosition, TileFlags.None);
+                    _tilemap.SetColor(cellPosition, Color.clear);
+                    Destroy(tempObject);
+
+                    var newTile = _tilemap.GetTile<Tile>(cellPosition);
+                    if (newTile == null) return;
+
+                    var newTempObject = new GameObject("CropAnimSpawn");
+                    newTempObject.transform.position = worldPosition;
+                    newTempObject.transform.localScale = Vector3.zero;
+                    var newSpriteRenderer = newTempObject.AddComponent<SpriteRenderer>();
+                    newSpriteRenderer.sprite = newTile.sprite; // ← new sprite grows in!
+                    newSpriteRenderer.sortingOrder = 1;
+
+                    newTempObject.transform.DOScale(1f, 0.4f)
+                        .SetEase(Ease.OutBack)
+                        .OnComplete(() =>
+                        {
+                            Destroy(newTempObject);
+                            _tilemap.SetColor(cellPosition, Color.white);
+                        });
+                });
         }
     }
 

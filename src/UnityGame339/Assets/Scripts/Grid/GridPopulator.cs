@@ -52,7 +52,9 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     private FarmMatchGameModel _model;
     private FarmMatchScreenViewModel _viewModel;
     private Camera _inputCamera;
+    
     private FarmMatchAnimator _animator;
+    private List<(Vector3 worldPos, Sprite oldSprite)> _pendingAnimData;
 
     private void Awake()
     {
@@ -136,7 +138,19 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         cropType = GetCropType(tile);
         return true;
     }
-
+    private void CapturePreSubmitAnimationData()
+    {
+        _pendingAnimData = _model.CurrentSelection
+            .Select(p => {
+                var cellPos = GetCellPosition(p);
+                var oldTile = Tilemap.GetTile<Tile>(cellPos);
+                return (
+                    worldPos: Tilemap.GetCellCenterWorld(cellPos),
+                    oldSprite: oldTile?.sprite
+                );
+            })
+            .ToList();
+    }
     public void ReplaceMatchedCrops(IReadOnlyList<GridPosition> matchedPositions)
     {
         if (Tilemap == null || matchedPositions == null)
@@ -185,6 +199,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         {
             if (_model.State.SelectionCount >= minimumMatchCount)
             {
+                CapturePreSubmitAnimationData();
                 PlaySubmitSelectionSound();
                 return;
             }
@@ -208,16 +223,17 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         _model?.StartNewRound();
     }
 
+    // GridPopulator - HandleMatchResolved
     private void HandleMatchResolved(FarmMatchResolution resolution)
     {
         ShowScorePopup(resolution);
         _animator?.PlayScoreIncreasedAnimation();
-        
-        var worldPositions = resolution.MatchedPositions
-            .Select(p => Tilemap.GetCellCenterWorld(GetCellPosition(p)))
-            .ToList();
 
-        _animator?.PlayCropsReplacedAnimation(worldPositions);
+        if (_pendingAnimData != null)
+        {
+            _animator?.PlayCropsReplacedAnimation(_pendingAnimData);
+            _pendingAnimData = null;
+        }
     }
     
     private void HandleRoundAdvanced(FarmMatchRoundProgress progress)
@@ -274,6 +290,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
         {
+            CapturePreSubmitAnimationData();
             PlaySubmitSelectionSound();
         }
 
