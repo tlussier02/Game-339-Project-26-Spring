@@ -50,6 +50,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     private FarmMatchGameModel _model;
     private FarmMatchScreenViewModel _viewModel;
     private Camera _inputCamera;
+    private FarmMatchAnimator _animator;
 
     private void Awake()
     {
@@ -74,6 +75,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         _viewModel.ViewChanged += Render;
         _viewModel.MatchResolved += HandleMatchResolved;
         _viewModel.RoundEnded += HandleRoundEnded;
+        _model.RoundAdvanced += HandleRoundAdvanced;
 
         if (startButton != null)
         {
@@ -98,6 +100,7 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
             _viewModel.ViewChanged -= Render;
             _viewModel.MatchResolved -= HandleMatchResolved;
             _viewModel.RoundEnded -= HandleRoundEnded;
+            _model.RoundAdvanced -= HandleRoundAdvanced;
             _viewModel.Dispose();
         }
 
@@ -206,6 +209,12 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     private void HandleMatchResolved(FarmMatchResolution resolution)
     {
         ShowScorePopup(resolution);
+        _animator?.PlayScoreIncreasedAnimation();
+    }
+    
+    private void HandleRoundAdvanced(FarmMatchRoundProgress progress)
+    {
+        _animator?.PlayGoalIncreasedAnimation();
     }
 
     private void HandleRoundEnded(FarmMatchRoundResult result)
@@ -498,6 +507,9 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
         {
             _inputCamera = FindFirstObjectByType<Camera>();
         }
+        
+        if (_animator == null)
+            _animator = FindFirstObjectByType<FarmMatchAnimator>();
     }
 
     private void Render()
