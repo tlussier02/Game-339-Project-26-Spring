@@ -5,14 +5,16 @@ https://formanl.atlassian.net/jira/software/projects/CM/boards/34?atlOrigin=eyJp
 
 
 # Figma Link: 
+NOTE: You are able to move with the middle click button or by swapping the tool at the bottom to hand, you can zoom in with ctrl + scroll. If there are problems, I have screenshots of the wireframes on the Spec Document under the "Wireframes" tab for this project, Crop Collector/Farming Match.
 https://www.figma.com/design/bLceplAYaAnO83HaENjU3Y/match-board-wireframe?node-id=0-1&t=l2SHWaJ0LnTNLVr0-1
 
 # Spec Document Link:
 
 https://docs.google.com/document/d/1111OR8xVApTQpESf5skP_-rV4vf_S8RYE48flwblzLk/edit?usp=sharing
 
-# BGM Music Asset - royalty free
-https://dova-s.jp/en/bgm/detail/9618/download
+# BGM Music - Animal Crossing New Horizon 1 PM and 2 PM Sunny
+
+# SFX - Itch.io free packs
 
 # Project Stack
 
