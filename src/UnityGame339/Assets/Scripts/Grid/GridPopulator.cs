@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using System.Linq;
+
 
 public class GridPopulator : MonoBehaviour, IFarmMatchBoard
 {
@@ -210,6 +212,12 @@ public class GridPopulator : MonoBehaviour, IFarmMatchBoard
     {
         ShowScorePopup(resolution);
         _animator?.PlayScoreIncreasedAnimation();
+        
+        var worldPositions = resolution.MatchedPositions
+            .Select(p => Tilemap.GetCellCenterWorld(GetCellPosition(p)))
+            .ToList();
+
+        _animator?.PlayCropsReplacedAnimation(worldPositions);
     }
     
     private void HandleRoundAdvanced(FarmMatchRoundProgress progress)
